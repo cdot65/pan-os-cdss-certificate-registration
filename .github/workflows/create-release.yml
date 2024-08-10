@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
             goos: linux
@@ -62,13 +61,21 @@ jobs:
       - uses: actions/checkout@v4.1.7
 
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4
         with:
-          name: cdss-cert-register-*
+          name: |
+            cdss-cert-register-linux-amd64
+            cdss-cert-register-windows-amd64
+            cdss-cert-register-darwin-amd64
+            cdss-cert-register-darwin-arm64
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: cdss-cert-register-*.zip  # Upload all the generated zip files as release assets
-          token: ${{ secrets.GITHUB_TOKEN }}  # Ensure GITHUB_TOKEN has proper permissions
+          files: |
+            cdss-cert-register-linux-amd64.zip
+            cdss-cert-register-windows-amd64.zip
+            cdss-cert-register-darwin-amd64.zip
+            cdss-cert-register-darwin-arm64.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
