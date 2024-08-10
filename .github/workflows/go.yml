@@ -13,14 +13,12 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true  # Enforce Node 20 for all JavaScript actions
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5.0.2
       with:
         go-version: '1.20'
 
