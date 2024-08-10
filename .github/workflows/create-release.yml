@@ -11,8 +11,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        goos: [linux, windows, darwin]
-        goarch: [amd64, arm64]  # Added arm64 support for ARM architecture
+        include:
+          - os: ubuntu-latest
+            goos: linux
+            goarch: amd64
+          - os: windows-latest
+            goos: windows
+            goarch: amd64
+          - os: macos-latest
+            goos: darwin
+            goarch: amd64
+          - os: macos-latest
+            goos: darwin
+            goarch: arm64
     steps:
       - uses: actions/checkout@v4.1.7
 
