@@ -11,62 +11,61 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            goos: linux
+          - goos: linux
             goarch: amd64
-          - os: windows-latest
-            goos: windows
+          - goos: windows
             goarch: amd64
-          - os: macos-latest
-            goos: darwin
+          - goos: darwin
             goarch: amd64
-          - os: macos-latest
-            goos: darwin
+          - goos: darwin
             goarch: arm64
+
     steps:
-      - uses: actions/checkout@v4.1.7
+      - name: Check out code
+        uses: actions/checkout@v4.1.7
 
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
           go-version: '1.20'
 
-      # Initialize Go Module (since go.mod is not checked in)
       - name: Initialize Go Module
         run: go mod init github.com/cdot65/pan-os-cdss-certificate-registration
 
-      # Tidy up dependencies
-      - name: Tidy Go Module
+      - name: Download dependencies
         run: go mod tidy
 
       - name: Build Binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
         run: |
-          echo "Building for ${{ matrix.goos }}/${{ matrix.goarch }}"
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }} ./main.go
+          go build -v -o pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }} ./main.go
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            mv pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }} pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }}.exe
+          fi
 
-      - name: Archive Binary
-        run: |
-          zip cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}.zip cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}
-
-      - name: Upload Build Artifact
+      - name: Upload Binary
         uses: actions/upload-artifact@v4
         with:
-          name: cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+          name: pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.goos == 'windows' && '.exe' || '' }}
 
   release:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
 
-      - name: Create GitHub Release
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            cdss-cert-register-linux-amd64.zip
-            cdss-cert-register-windows-amd64.zip
-            cdss-cert-register-darwin-amd64.zip
-            cdss-cert-register-darwin-arm64.zip
-          token: ${{ secrets.GH_SECRET }}
+            pan-os-cdss-certificate-registration-linux-amd64/pan-os-cdss-certificate-registration-linux-amd64
+            pan-os-cdss-certificate-registration-windows-amd64/pan-os-cdss-certificate-registration-windows-amd64.exe
+            pan-os-cdss-certificate-registration-darwin-amd64/pan-os-cdss-certificate-registration-darwin-amd64
+            pan-os-cdss-certificate-registration-darwin-arm64/pan-os-cdss-certificate-registration-darwin-arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
