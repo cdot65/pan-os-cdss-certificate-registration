@@ -40,17 +40,17 @@ jobs:
       - name: Tidy Go Module
         run: go mod tidy
 
-      - name: Set up cross-compilation environment
+      - name: Build Binary
         run: |
           echo "Building for ${{ matrix.goos }}/${{ matrix.goarch }}"
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }} ./main.go
 
-      - name: Archive binary
+      - name: Archive Binary
         run: |
           zip cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}.zip cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4.3.6
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}
           path: cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}.zip
@@ -61,9 +61,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.7
 
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: cdss-cert-register-*
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: cdss-cert-register-*.zip  # Upload all the generated zip files as release assets
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}  # Ensure GITHUB_TOKEN has proper permissions
