@@ -33,4 +33,4 @@ jobs:
       # Run tests on specific files
       - name: Run Tests
         run: |
-          go test -v ./main.go
+          go test -v
