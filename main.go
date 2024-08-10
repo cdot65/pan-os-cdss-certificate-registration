@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cdot65/pan-os-cdss-certificate/config"
-	"github.com/cdot65/pan-os-cdss-certificate/devices"
-	"github.com/cdot65/pan-os-cdss-certificate/logger"
-	"github.com/cdot65/pan-os-cdss-certificate/wildfire"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/devices"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/wildfire"
 )
 
 // Main function to register WildFire on multiple devices concurrently.

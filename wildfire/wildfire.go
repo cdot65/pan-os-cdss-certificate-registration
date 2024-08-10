@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cdot65/pan-os-cdss-certificate/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
 	"github.com/scrapli/scrapligo/driver/generic"
 	"github.com/scrapli/scrapligo/driver/options"
 	"github.com/scrapli/scrapligo/transport"

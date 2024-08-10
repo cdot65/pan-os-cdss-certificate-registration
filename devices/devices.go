@@ -4,13 +4,13 @@ package devices
 import (
 	"encoding/xml"
 	"fmt"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 	"os"
 	"strings"
 
 	"github.com/PaloAltoNetworks/pango"
-	"github.com/cdot65/pan-os-cdss-certificate/config"
-	"github.com/cdot65/pan-os-cdss-certificate/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
 )
 
 // GetDeviceList retrieves a list of devices based on configuration and filters.
