@@ -201,7 +201,7 @@ func filterDevices(devices []map[string]string, filters []string, l *logger.Logg
 	for _, device := range devices {
 		hostname := device["hostname"]
 		for _, filter := range filters {
-			if strings.Contains(hostname, strings.TrimSpace(filter)) {
+			if strings.HasPrefix(hostname, strings.TrimSpace(filter)) {
 				filteredDevices = append(filteredDevices, device)
 				l.Debug("Device matched filter:", hostname)
 				break

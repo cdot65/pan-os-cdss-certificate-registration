@@ -2,8 +2,8 @@ name: Build and Test Pull Request
 
 on:
   pull_request:
-    branches-ignore:
-      - main  # Ignore pull requests made to the main branch
+    branches:
+      - '*'
 
 jobs:
   build-and-test:
@@ -30,7 +30,22 @@ jobs:
         run: |
           go build -v ./main.go
 
-      # Run tests on specific files
-      - name: Run Tests
+      # Run tests on main.go
+      - name: Run Main Tests
         run: |
-          go test -v ./main.go ./config/config.go ./devices/devices.go ./logger/logger.go ./wildfire/wildfire.go
+          go test -v main.go
+
+      # Run tests on config/config.go
+      - name: Run Config Tests
+        run: |
+          go test -v config/config.go
+
+      # Run tests on devices/devices.go
+      - name: Run Devices Tests
+        run: |
+          go test -v devices/devices.go
+
+      # Run tests on logger/logger.go
+      - name: Run Logger Tests
+        run: |
+          go test -v logger/logger.go
