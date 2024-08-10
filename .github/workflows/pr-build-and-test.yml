@@ -33,7 +33,7 @@ jobs:
       # Run tests on main.go
       - name: Run Main Tests
         run: |
-          go test -v main.go config/config.go
+          go test -v main.go
 
       # Run tests on config/config.go
       - name: Run Config Tests
