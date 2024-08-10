@@ -1,0 +1,36 @@
+name: Build and Test Pull Request
+
+on:
+  pull_request:
+    branches-ignore:
+      - main  # Ignore pull requests made to the main branch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - name: Set up Go
+        uses: actions/setup-go@v5.0.2
+        with:
+          go-version: '1.20'
+
+      # Initialize Go Module
+      - name: Initialize Go Module
+        run: go mod init github.com/cdot65/pan-os-cdss-certificate-registration
+
+      # Tidy up dependencies
+      - name: Tidy Go Module
+        run: go mod tidy
+
+      # Build the binary
+      - name: Build Binary
+        run: |
+          go build -v ./main.go
+
+      # Run tests on specific files
+      - name: Run Tests
+        run: |
+          go test -v ./main.go ./config/config.go ./devices/devices.go ./logger/logger.go ./wildfire/wildfire.go
