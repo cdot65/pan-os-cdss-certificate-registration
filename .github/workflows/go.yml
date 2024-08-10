@@ -13,6 +13,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true  # Enforce Node 20 for all JavaScript actions
+
     steps:
     - uses: actions/checkout@v4
 
