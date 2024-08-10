@@ -37,6 +37,12 @@ This Go script automates the process of registering WildFire on Palo Alto Networ
     ```
     go mod tidy
     ```
+   
+4. Build the binary for your workstation:
+
+   ```
+   go build main.go 
+   ```
 
 ## Configuration
 
