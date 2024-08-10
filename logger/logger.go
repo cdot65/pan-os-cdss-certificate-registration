@@ -11,6 +11,7 @@ import (
 type Logger struct {
 	debugLevel int
 	*log.Logger
+	exitFunc func(int)
 }
 
 // New creates and returns a new Logger instance with specified debug level and verbosity.
@@ -32,6 +33,7 @@ func New(debugLevel int, verbose bool) *Logger {
 	return &Logger{
 		debugLevel: debugLevel,
 		Logger:     log.New(os.Stdout, "", log.Ldate|log.Ltime),
+		exitFunc:   os.Exit, // Default to os.Exit
 	}
 }
 
@@ -87,5 +89,5 @@ func (l *Logger) Info(v ...interface{}) {
 
 func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.Printf("[FATAL] "+format, v...)
-	os.Exit(1)
+	l.exitFunc(1) // Use the exitFunc instead of directly calling os.Exit
 }
