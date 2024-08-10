@@ -21,10 +21,18 @@ jobs:
         with:
           go-version: '1.20'
 
+      # Initialize Go Module (since go.mod is not checked in)
+      - name: Initialize Go Module
+        run: go mod init github.com/cdot65/pan-os-cdss-certificate-registration
+
+      # Tidy up dependencies
+      - name: Tidy Go Module
+        run: go mod tidy
+
       - name: Set up cross-compilation environment
         run: |
           echo "Building for ${{ matrix.goos }}/${{ matrix.goarch }}"
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }}
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o cdss-cert-register-${{ matrix.goos }}-${{ matrix.goarch }} ./main.go
 
       - name: Archive binary
         run: |
