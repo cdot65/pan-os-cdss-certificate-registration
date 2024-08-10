@@ -68,4 +68,4 @@ jobs:
             pan-os-cdss-certificate-registration-darwin-amd64/pan-os-cdss-certificate-registration-darwin-amd64
             pan-os-cdss-certificate-registration-darwin-arm64/pan-os-cdss-certificate-registration-darwin-arm64
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_SECRET }}
