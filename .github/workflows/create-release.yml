@@ -69,4 +69,4 @@ jobs:
             cdss-cert-register-windows-amd64.zip
             cdss-cert-register-darwin-amd64.zip
             cdss-cert-register-darwin-arm64.zip
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_SECRET }}
