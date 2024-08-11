@@ -100,21 +100,8 @@ type Inventory struct {
 }
 
 // Load reads configuration and secrets from YAML files and returns a Config struct.
-
 // This function reads configuration data from a specified config file and secrets
 // from a secrets file, combining them into a single Config struct.
-
-// Attributes:
-//   configFile (string): Path to the main configuration YAML file.
-//   secretsFile (string): Path to the secrets YAML file.
-
-// Error:
-//   error: If there's an issue reading either the config or secrets file.
-
-// Return:
-//   *Config: Pointer to the populated Config struct.
-//   error: Nil if successful, otherwise an error describing what went wrong.
-
 func Load(configFile, secretsFile string) (*Config, error) {
 	var config Config
 	if err := readYAMLFile(configFile, &config); err != nil {
@@ -127,20 +114,8 @@ func Load(configFile, secretsFile string) (*Config, error) {
 }
 
 // readYAMLFile reads and unmarshals YAML data from a file into a provided interface.
-
 // This function reads the contents of a YAML file specified by the filename,
 // and unmarshals the data into the provided interface.
-
-// Attributes:
-//   filename (string): The path to the YAML file to be read.
-//   v (interface{}): A pointer to the variable where the unmarshaled data will be stored.
-
-// Error:
-//   error: An error is returned if the file cannot be read or if the YAML data cannot be unmarshaled.
-
-// Return:
-//   error: nil if successful, otherwise an error describing what went wrong.
-
 func readYAMLFile(filename string, v interface{}) error {
 	data, err := os.ReadFile(filename)
 	if err != nil {
