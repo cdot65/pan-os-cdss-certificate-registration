@@ -100,6 +100,10 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, er
 
 	minVersions, ok := config.MinimumPatchedVersions[featureRelease]
 	if !ok {
+		// If the feature release is not in MinimumPatchedVersions
+		if v.Major < 8 || (v.Major == 8 && v.Feature < 1) {
+			return true, nil // Versions earlier than 8.1 are considered affected
+		}
 		return false, fmt.Errorf("unknown feature release: %s", featureRelease)
 	}
 
