@@ -1,20 +1,87 @@
-// config/config_test.go
 package config
 
 import (
+	"flag"
 	"os"
+	"reflect"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
+func TestSetupFlags(t *testing.T) {
+	tests := []struct {
+		name     string
+		args     []string
+		expected *Flags
+	}{
+		{
+			name: "Default values",
+			args: []string{},
+			expected: &Flags{
+				DebugLevel:     0,
+				Concurrency:    runtime.NumCPU(),
+				ConfigFile:     "panorama.yaml",
+				SecretsFile:    ".secrets.yaml",
+				HostnameFilter: "",
+				Verbose:        false,
+				NoPanorama:     false,
+			},
+		},
+		{
+			name: "Custom values",
+			args: []string{
+				"-debug", "1",
+				"-concurrency", "4",
+				"-config", "custom.yaml",
+				"-secrets", "custom_secrets.yaml",
+				"-filter", "fw-*",
+				"-verbose",
+				"-nopanorama",
+			},
+			expected: &Flags{
+				DebugLevel:     1,
+				Concurrency:    4,
+				ConfigFile:     "custom.yaml",
+				SecretsFile:    "custom_secrets.yaml",
+				HostnameFilter: "fw-*",
+				Verbose:        true,
+				NoPanorama:     true,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			fs := flag.NewFlagSet("test", flag.ContinueOnError)
+			cfg := &Flags{}
+			setupFlags(fs, cfg)
+
+			err := fs.Parse(tt.args)
+			require.NoError(t, err)
+
+			assert.Equal(t, tt.expected, cfg)
+		})
+	}
+}
+
 func TestLoad(t *testing.T) {
-	// Create temporary config and secrets files
-	configContent := `
+	tests := []struct {
+		name           string
+		configContent  string
+		secretsContent string
+		expectedConfig *Config
+		expectError    bool
+	}{
+		{
+			name: "Valid config and secrets",
+			configContent: `
 panorama:
   - hostname: test-panorama.example.com
-`
-	secretsContent := `
+`,
+			secretsContent: `
 auth:
   panorama:
     username: panorama-user
@@ -22,63 +89,132 @@ auth:
   firewall:
     username: firewall-user
     password: firewall-pass
-`
-	tmpConfigFile := createTempFile(t, "config", configContent)
-	defer func() {
-		err := os.Remove(tmpConfigFile.Name())
-		if err != nil {
-			t.Errorf("Failed to remove temporary config file: %v", err)
-		}
-	}()
+`,
+			expectedConfig: &Config{
+				Panorama: []struct {
+					Hostname string `yaml:"hostname"`
+				}([]struct{ Hostname string }{
+					{Hostname: "test-panorama.example.com"},
+				}),
+				Auth: AuthConfig{
+					Auth: struct {
+						Panorama struct {
+							Username string `yaml:"username"`
+							Password string `yaml:"password"`
+						} `yaml:"panorama"`
+						Firewall struct {
+							Username string `yaml:"username"`
+							Password string `yaml:"password"`
+						} `yaml:"firewall"`
+					}{
+						Panorama: struct {
+							Username string `yaml:"username"`
+							Password string `yaml:"password"`
+						}{
+							Username: "panorama-user",
+							Password: "panorama-pass",
+						},
+						Firewall: struct {
+							Username string `yaml:"username"`
+							Password string `yaml:"password"`
+						}{
+							Username: "firewall-user",
+							Password: "firewall-pass",
+						},
+					},
+				},
+			},
+			expectError: false,
+		},
+		{
+			name:           "Invalid config file",
+			configContent:  "invalid: yaml: content",
+			secretsContent: "",
+			expectedConfig: nil,
+			expectError:    true,
+		},
+		{
+			name:           "Invalid secrets file",
+			configContent:  "panorama: []",
+			secretsContent: "invalid: yaml: content",
+			expectedConfig: nil,
+			expectError:    true,
+		},
+	}
 
-	tmpSecretsFile := createTempFile(t, "secrets", secretsContent)
-	defer func() {
-		err := os.Remove(tmpSecretsFile.Name())
-		if err != nil {
-			t.Errorf("Failed to remove temporary secrets file: %v", err)
-		}
-	}()
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			configFile := createTempFile(t, "config", tt.configContent)
+			defer os.Remove(configFile.Name())
 
-	// Test Load function
-	config, err := Load(tmpConfigFile.Name(), tmpSecretsFile.Name())
-	assert.NoError(t, err)
-	assert.NotNil(t, config)
+			secretsFile := createTempFile(t, "secrets", tt.secretsContent)
+			defer os.Remove(secretsFile.Name())
 
-	// Check if the config is correctly loaded
-	assert.Len(t, config.Panorama, 1)
-	assert.Equal(t, "test-panorama.example.com", config.Panorama[0].Hostname)
+			config, err := Load(configFile.Name(), secretsFile.Name())
 
-	// Check if the secrets are correctly loaded
-	assert.Equal(t, "panorama-user", config.Auth.Auth.Panorama.Username)
-	assert.Equal(t, "panorama-pass", config.Auth.Auth.Panorama.Password)
-	assert.Equal(t, "firewall-user", config.Auth.Auth.Firewall.Username)
-	assert.Equal(t, "firewall-pass", config.Auth.Auth.Firewall.Password)
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.True(t, reflect.DeepEqual(tt.expectedConfig, config), "Configs do not match")
+			}
+		})
+	}
 }
 
 func TestLoadError(t *testing.T) {
-	// Test with non-existent files
 	_, err := Load("non-existent-config.yaml", "non-existent-secrets.yaml")
 	assert.Error(t, err)
 }
 
 func TestReadYAMLFile(t *testing.T) {
-	content := `
+	tests := []struct {
+		name        string
+		content     string
+		expected    map[string]interface{}
+		expectError bool
+	}{
+		{
+			name: "Valid YAML",
+			content: `
 key1: value1
-key2: value2
-`
-	tmpFile := createTempFile(t, "test", content)
-	defer func() {
-		err := os.Remove(tmpFile.Name())
-		if err != nil {
-			t.Errorf("Failed to remove temporary file: %v", err)
-		}
-	}()
+key2:
+  nested1: nestedvalue1
+  nested2: nestedvalue2
+`,
+			expected: map[string]interface{}{
+				"key1": "value1",
+				"key2": map[string]interface{}{
+					"nested1": "nestedvalue1",
+					"nested2": "nestedvalue2",
+				},
+			},
+			expectError: false,
+		},
+		{
+			name:        "Invalid YAML",
+			content:     "key1: value1\nkey2: : invalid",
+			expected:    nil,
+			expectError: true,
+		},
+	}
 
-	var result map[string]string
-	err := readYAMLFile(tmpFile.Name(), &result)
-	assert.NoError(t, err)
-	assert.Equal(t, "value1", result["key1"])
-	assert.Equal(t, "value2", result["key2"])
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tmpFile := createTempFile(t, "test", tt.content)
+			defer os.Remove(tmpFile.Name())
+
+			var result map[string]interface{}
+			err := readYAMLFile(tmpFile.Name(), &result)
+
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestReadYAMLFileError(t *testing.T) {
@@ -89,10 +225,13 @@ func TestReadYAMLFileError(t *testing.T) {
 // Helper function to create a temporary file with given content
 func createTempFile(t *testing.T, prefix, content string) *os.File {
 	tmpFile, err := os.CreateTemp("", prefix)
-	assert.NoError(t, err)
+	require.NoError(t, err)
+
 	_, err = tmpFile.Write([]byte(content))
-	assert.NoError(t, err)
+	require.NoError(t, err)
+
 	err = tmpFile.Close()
-	assert.NoError(t, err)
+	require.NoError(t, err)
+
 	return tmpFile
 }
