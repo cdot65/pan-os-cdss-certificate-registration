@@ -4,21 +4,14 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
-	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 )
 
 // Version represents a PAN-OS version
 type Version struct {
 	Major       int
 	Feature     int
-	Maintenance int
-	Hotfix      int
-}
-
-// MinimumPatchedVersion represents the minimum patched version for a specific release
-type MinimumPatchedVersion struct {
 	Maintenance int
 	Hotfix      int
 }
@@ -81,89 +74,6 @@ func (v *Version) IsLessThan(other *Version) bool {
 	return v.Hotfix < other.Hotfix
 }
 
-// MinimumPatchedVersions represents the minimum patched versions for each PAN-OS feature release
-var MinimumPatchedVersions = map[string][]MinimumPatchedVersion{
-	"8.1": {
-		{Maintenance: 21, Hotfix: 3},
-		{Maintenance: 25, Hotfix: 3},
-		{Maintenance: 26, Hotfix: 0},
-	},
-	"9.0": {
-		{Maintenance: 16, Hotfix: 7},
-		{Maintenance: 17, Hotfix: 5},
-	},
-	"9.1": {
-		{Maintenance: 11, Hotfix: 5},
-		{Maintenance: 12, Hotfix: 7},
-		{Maintenance: 13, Hotfix: 5},
-		{Maintenance: 14, Hotfix: 8},
-		{Maintenance: 16, Hotfix: 5},
-		{Maintenance: 17, Hotfix: 0},
-	},
-	"10.0": {
-		{Maintenance: 8, Hotfix: 8},
-		{Maintenance: 11, Hotfix: 4},
-		{Maintenance: 12, Hotfix: 5},
-	},
-	"10.1": {
-		{Maintenance: 3, Hotfix: 3},
-		{Maintenance: 4, Hotfix: 6},
-		{Maintenance: 5, Hotfix: 4},
-		{Maintenance: 6, Hotfix: 8},
-		{Maintenance: 7, Hotfix: 1},
-		{Maintenance: 8, Hotfix: 7},
-		{Maintenance: 9, Hotfix: 8},
-		{Maintenance: 10, Hotfix: 5},
-		{Maintenance: 11, Hotfix: 5},
-		{Maintenance: 12, Hotfix: 0},
-	},
-	"10.2": {
-		{Maintenance: 0, Hotfix: 2},
-		{Maintenance: 1, Hotfix: 1},
-		{Maintenance: 2, Hotfix: 4},
-		{Maintenance: 3, Hotfix: 12},
-		{Maintenance: 4, Hotfix: 10},
-		{Maintenance: 6, Hotfix: 1},
-		{Maintenance: 7, Hotfix: 3},
-		{Maintenance: 8, Hotfix: 0},
-	},
-	"10.2-gp": {
-		{Maintenance: 0, Hotfix: 3},
-		{Maintenance: 1, Hotfix: 2},
-		{Maintenance: 2, Hotfix: 5},
-		{Maintenance: 3, Hotfix: 13},
-		{Maintenance: 4, Hotfix: 16},
-		{Maintenance: 5, Hotfix: 6},
-		{Maintenance: 6, Hotfix: 3},
-		{Maintenance: 7, Hotfix: 8},
-		{Maintenance: 8, Hotfix: 3},
-		{Maintenance: 9, Hotfix: 1},
-	},
-	"11.0": {
-		{Maintenance: 0, Hotfix: 2},
-		{Maintenance: 1, Hotfix: 3},
-		{Maintenance: 2, Hotfix: 3},
-		{Maintenance: 3, Hotfix: 3},
-		{Maintenance: 4, Hotfix: 0},
-	},
-	"11.0-gp": {
-		{Maintenance: 0, Hotfix: 3},
-		{Maintenance: 1, Hotfix: 4},
-		{Maintenance: 2, Hotfix: 4},
-		{Maintenance: 3, Hotfix: 10},
-		{Maintenance: 4, Hotfix: 1},
-	},
-	"11.1": {
-		{Maintenance: 0, Hotfix: 2},
-		{Maintenance: 1, Hotfix: 0},
-	},
-	"11.1-gp": {
-		{Maintenance: 0, Hotfix: 3},
-		{Maintenance: 1, Hotfix: 1},
-		{Maintenance: 2, Hotfix: 3},
-	},
-}
-
 // IsAffectedVersion checks if a given version is affected (needs to be patched)
 func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, error) {
 	major, _ := strconv.Atoi(device["parsed_version_major"])
@@ -188,7 +98,7 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, er
 		featureRelease += "-gp"
 	}
 
-	minVersions, ok := MinimumPatchedVersions[featureRelease]
+	minVersions, ok := config.MinimumPatchedVersions[featureRelease]
 	if !ok {
 		return false, fmt.Errorf("unknown feature release: %s", featureRelease)
 	}
@@ -220,55 +130,4 @@ func FilterAffectedDevices(deviceList []map[string]string) ([]map[string]string,
 	}
 
 	return affectedDevices, nil
-}
-
-// PrintDeviceList prints a formatted list of devices to the console.
-// This function takes a slice of device maps and a logger, then iterates through
-// the list to print each device's details in a structured format.
-func PrintDeviceList(deviceList []map[string]string, l *logger.Logger) {
-	l.Info("Printing device list")
-	fmt.Println("Device List:")
-	for i, device := range deviceList {
-		fmt.Printf("Device %d:\n", i+1)
-		for key, value := range device {
-			fmt.Printf("  %s: %s\n", key, value)
-		}
-		fmt.Printf("  Parsed Version: %s.%s.%s-h%s\n",
-			device["parsed_version_major"],
-			device["parsed_version_feature"],
-			device["parsed_version_maintenance"],
-			device["parsed_version_hotfix"])
-		fmt.Println()
-	}
-}
-
-// PrintResults processes and displays WildFire registration results for multiple devices.
-// This function reads results from a channel, prints them, and keeps track of successful
-// and failed registrations. It handles timeouts and unexpected channel closures.
-func PrintResults(results chan string, totalDevices int, l *logger.Logger) {
-	l.Info("Waiting for WildFire registration results")
-	fmt.Println("WildFire Registration Results:")
-	successCount := 0
-	failureCount := 0
-	for i := 0; i < totalDevices; i++ {
-		select {
-		case result, ok := <-results:
-			if !ok {
-				l.Info("Results channel closed unexpectedly")
-				break
-			}
-			fmt.Println(result)
-			if strings.Contains(result, "Successfully registered") {
-				successCount++
-			} else {
-				failureCount++
-			}
-		case <-time.After(6 * time.Minute):
-			l.Info("Timeout waiting for result")
-			fmt.Printf("Timeout waiting for result from device %d\n", i+1)
-			failureCount++
-		}
-	}
-
-	l.Info(fmt.Sprintf("Registration complete. Successes: %d, Failures: %d", successCount, failureCount))
 }
