@@ -22,18 +22,21 @@ type Flags struct {
 	NoPanorama     bool
 }
 
+// setupFlags sets up the flags without parsing them
+func setupFlags(fs *flag.FlagSet, cfg *Flags) {
+	fs.IntVar(&cfg.DebugLevel, "debug", 0, "Debug level: 0=INFO, 1=DEBUG")
+	fs.IntVar(&cfg.Concurrency, "concurrency", runtime.NumCPU(), "Number of concurrent operations")
+	fs.StringVar(&cfg.ConfigFile, "config", "panorama.yaml", "Path to the Panorama configuration file")
+	fs.StringVar(&cfg.SecretsFile, "secrets", ".secrets.yaml", "Path to the secrets file")
+	fs.StringVar(&cfg.HostnameFilter, "filter", "", "Comma-separated list of hostname patterns to filter devices")
+	fs.BoolVar(&cfg.Verbose, "verbose", false, "Enable verbose logging")
+	fs.BoolVar(&cfg.NoPanorama, "nopanorama", false, "Use inventory.yaml instead of querying Panorama")
+}
+
 // ParseFlags parses command-line flags and returns a configuration object.
-// This function sets up and parses command-line flags for various configuration options,
-// including debug level, concurrency, file paths, and operational modes.
 func ParseFlags() *Flags {
 	cfg := &Flags{}
-	flag.IntVar(&cfg.DebugLevel, "debug", 0, "Debug level: 0=INFO, 1=DEBUG")
-	flag.IntVar(&cfg.Concurrency, "concurrency", runtime.NumCPU(), "Number of concurrent operations")
-	flag.StringVar(&cfg.ConfigFile, "config", "panorama.yaml", "Path to the Panorama configuration file")
-	flag.StringVar(&cfg.SecretsFile, "secrets", ".secrets.yaml", "Path to the secrets file")
-	flag.StringVar(&cfg.HostnameFilter, "filter", "", "Comma-separated list of hostname patterns to filter devices")
-	flag.BoolVar(&cfg.Verbose, "verbose", false, "Enable verbose logging")
-	flag.BoolVar(&cfg.NoPanorama, "nopanorama", false, "Use inventory.yaml instead of querying Panorama")
+	setupFlags(flag.CommandLine, cfg)
 	flag.Parse()
 	return cfg
 }
@@ -121,5 +124,57 @@ func readYAMLFile(filename string, v interface{}) error {
 	if err != nil {
 		return fmt.Errorf("failed to read file: %w", err)
 	}
-	return yaml.Unmarshal(data, v)
+
+	err = yaml.Unmarshal(data, v)
+	if err != nil {
+		return err
+	}
+
+	// If v is a pointer to a map[string]interface{}, convert nested maps
+	if m, ok := v.(*map[string]interface{}); ok {
+		*m = convertMap(*m)
+	}
+
+	return nil
+}
+
+// convertMap recursively converts map[interface{}]interface{} to map[string]interface{}
+func convertMap(m map[string]interface{}) map[string]interface{} {
+	res := make(map[string]interface{})
+	for k, v := range m {
+		switch v := v.(type) {
+		case map[interface{}]interface{}:
+			res[k] = convertMap(convertMapInterfaceToString(v))
+		case []interface{}:
+			res[k] = convertSlice(v)
+		default:
+			res[k] = v
+		}
+	}
+	return res
+}
+
+// convertMapInterfaceToString converts map[interface{}]interface{} to map[string]interface{}
+func convertMapInterfaceToString(m map[interface{}]interface{}) map[string]interface{} {
+	res := make(map[string]interface{})
+	for k, v := range m {
+		res[fmt.Sprint(k)] = v
+	}
+	return res
+}
+
+// convertSlice recursively converts []interface{} elements
+func convertSlice(s []interface{}) []interface{} {
+	res := make([]interface{}, len(s))
+	for i, v := range s {
+		switch v := v.(type) {
+		case map[interface{}]interface{}:
+			res[i] = convertMap(convertMapInterfaceToString(v))
+		case []interface{}:
+			res[i] = convertSlice(v)
+		default:
+			res[i] = v
+		}
+	}
+	return res
 }
