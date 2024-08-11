@@ -5,8 +5,10 @@ import (
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/devices"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/pdfgenerate"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/utils"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/wildfire"
+	"log"
 	"sync"
 )
 
@@ -50,6 +52,14 @@ func main() {
 		deviceList[i]["parsed_version_maintenance"] = fmt.Sprintf("%d", parsedVersion.Maintenance)
 		deviceList[i]["parsed_version_hotfix"] = fmt.Sprintf("%d", parsedVersion.Hotfix)
 	}
+
+	// Generate PDF report using the pdfgenerate package
+	err = pdfgenerate.GeneratePDFReport(deviceList, "device_report.pdf")
+	if err != nil {
+		log.Fatal("Error generating PDF report:", err)
+	}
+
+	log.Println("PDF report generated successfully in the 'report' folder.")
 
 	// Filter affected devices
 	affectedDevices, err := utils.FilterAffectedDevices(deviceList)
