@@ -27,8 +27,11 @@ func main() {
 		l.Fatalf("Failed to load configuration: %v", err)
 	}
 
+	// Create DeviceManager
+	dm := devices.NewDeviceManager(conf, l)
+
 	// Get device list
-	deviceList, err := devices.GetDeviceList(conf, cfg.NoPanorama, cfg.HostnameFilter, l)
+	deviceList, err := dm.GetDeviceList(cfg.NoPanorama, cfg.HostnameFilter)
 	if err != nil {
 		l.Fatalf("Failed to get device list: %v", err)
 	}
