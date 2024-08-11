@@ -19,8 +19,8 @@ import (
 )
 
 // GeneratePDFReport creates a PDF report using the maroto library.
-func GeneratePDFReport(deviceList []map[string]string, reportName string) error {
-	m := GetMaroto(deviceList)
+func GeneratePDFReport(allDevices []map[string]string, affectedDevices []map[string]string, reportName string) error {
+	m := GetMaroto(allDevices, affectedDevices)
 	document, err := m.Generate()
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func GeneratePDFReport(deviceList []map[string]string, reportName string) error 
 	return nil
 }
 
-func GetMaroto(deviceList []map[string]string) core.Maroto {
+func GetMaroto(allDevices []map[string]string, affectedDevices []map[string]string) core.Maroto {
 	cfg := config.NewBuilder().
 		WithPageNumber().
 		WithLeftMargin(10).
@@ -66,6 +66,7 @@ func GetMaroto(deviceList []map[string]string) core.Maroto {
 		log.Fatal(err.Error())
 	}
 
+	// All Devices Table
 	m.AddRows(text.NewRow(10, "Device Report", props.Text{
 		Top:   3,
 		Style: fontstyle.Bold,
@@ -73,7 +74,7 @@ func GetMaroto(deviceList []map[string]string) core.Maroto {
 	}))
 
 	m.AddRow(7,
-		text.NewCol(3, "All PAN-OS NGFW Devices", props.Text{
+		text.NewCol(12, "All PAN-OS NGFW Devices", props.Text{
 			Top:   1.5,
 			Size:  9,
 			Style: fontstyle.Bold,
@@ -82,8 +83,23 @@ func GetMaroto(deviceList []map[string]string) core.Maroto {
 		}),
 	).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
 
-	// Add the device rows (including headers)
-	m.AddRows(getDeviceRows(deviceList)...)
+	m.AddRows(getDeviceRows(allDevices)...)
+
+	// Add some space between tables
+	m.AddRow(10, col.New(12))
+
+	// Affected Devices Table
+	m.AddRow(7,
+		text.NewCol(12, "NGFW requiring a PAN-OS upgrade", props.Text{
+			Top:   1.5,
+			Size:  9,
+			Style: fontstyle.Bold,
+			Align: align.Center,
+			Color: &props.WhiteColor,
+		}),
+	).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
+
+	m.AddRows(getDeviceRows(affectedDevices)...)
 
 	return m
 }
@@ -94,8 +110,8 @@ func getDeviceRows(deviceList []map[string]string) []core.Row {
 			text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(2, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(2, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+			text.NewCol(3, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+			text.NewCol(3, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 		),
 	}
 
@@ -106,8 +122,8 @@ func getDeviceRows(deviceList []map[string]string) []core.Row {
 			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(2, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(2, device["serial"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, device["serial"], props.Text{Size: 7, Align: align.Left}),
 		)
 		if i%2 == 0 {
 			gray := getGrayColor()
