@@ -3,8 +3,10 @@ package config
 
 import (
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"os"
+	"runtime"
 
 	"gopkg.in/yaml.v2"
 )
@@ -18,6 +20,22 @@ type Flags struct {
 	HostnameFilter string
 	Verbose        bool
 	NoPanorama     bool
+}
+
+// ParseFlags parses command-line flags and returns a configuration object.
+// This function sets up and parses command-line flags for various configuration options,
+// including debug level, concurrency, file paths, and operational modes.
+func ParseFlags() *Flags {
+	cfg := &Flags{}
+	flag.IntVar(&cfg.DebugLevel, "debug", 0, "Debug level: 0=INFO, 1=DEBUG")
+	flag.IntVar(&cfg.Concurrency, "concurrency", runtime.NumCPU(), "Number of concurrent operations")
+	flag.StringVar(&cfg.ConfigFile, "config", "panorama.yaml", "Path to the Panorama configuration file")
+	flag.StringVar(&cfg.SecretsFile, "secrets", ".secrets.yaml", "Path to the secrets file")
+	flag.StringVar(&cfg.HostnameFilter, "filter", "", "Comma-separated list of hostname patterns to filter devices")
+	flag.BoolVar(&cfg.Verbose, "verbose", false, "Enable verbose logging")
+	flag.BoolVar(&cfg.NoPanorama, "nopanorama", false, "Use inventory.yaml instead of querying Panorama")
+	flag.Parse()
+	return cfg
 }
 
 // Panorama represents the configuration details for Panorama.
