@@ -13,23 +13,9 @@ import (
 )
 
 // RegisterWildFire registers a device with WildFire public cloud service.
-
 // This function connects to a specified device using SSH, sends a WildFire
 // registration command, and verifies the output. It handles connection
 // errors and unexpected command outputs.
-
-// Attributes:
-//   device (map[string]string): Device information including hostname and IP address.
-//   username (string): SSH username for device authentication.
-//   password (string): SSH password for device authentication.
-//   l (*logger.Logger): Logger instance for debug output.
-
-// Error:
-//   error: Connection failures, command execution errors, or unexpected outputs.
-
-// Return:
-//   error: nil if successful, otherwise an error describing the failure.
-
 func RegisterWildFire(device map[string]string, username, password string, l *logger.Logger) error {
 	l.Debug("Attempting to connect to", device["hostname"], "at", device["ip-address"])
 
