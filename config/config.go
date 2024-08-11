@@ -3,8 +3,10 @@ package config
 
 import (
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"os"
+	"runtime"
 
 	"gopkg.in/yaml.v2"
 )
@@ -18,6 +20,25 @@ type Flags struct {
 	HostnameFilter string
 	Verbose        bool
 	NoPanorama     bool
+}
+
+// setupFlags sets up the flags without parsing them
+func setupFlags(fs *flag.FlagSet, cfg *Flags) {
+	fs.IntVar(&cfg.DebugLevel, "debug", 0, "Debug level: 0=INFO, 1=DEBUG")
+	fs.IntVar(&cfg.Concurrency, "concurrency", runtime.NumCPU(), "Number of concurrent operations")
+	fs.StringVar(&cfg.ConfigFile, "config", "panorama.yaml", "Path to the Panorama configuration file")
+	fs.StringVar(&cfg.SecretsFile, "secrets", ".secrets.yaml", "Path to the secrets file")
+	fs.StringVar(&cfg.HostnameFilter, "filter", "", "Comma-separated list of hostname patterns to filter devices")
+	fs.BoolVar(&cfg.Verbose, "verbose", false, "Enable verbose logging")
+	fs.BoolVar(&cfg.NoPanorama, "nopanorama", false, "Use inventory.yaml instead of querying Panorama")
+}
+
+// ParseFlags parses command-line flags and returns a configuration object.
+func ParseFlags() *Flags {
+	cfg := &Flags{}
+	setupFlags(flag.CommandLine, cfg)
+	flag.Parse()
+	return cfg
 }
 
 // Panorama represents the configuration details for Panorama.
@@ -82,21 +103,8 @@ type Inventory struct {
 }
 
 // Load reads configuration and secrets from YAML files and returns a Config struct.
-
 // This function reads configuration data from a specified config file and secrets
 // from a secrets file, combining them into a single Config struct.
-
-// Attributes:
-//   configFile (string): Path to the main configuration YAML file.
-//   secretsFile (string): Path to the secrets YAML file.
-
-// Error:
-//   error: If there's an issue reading either the config or secrets file.
-
-// Return:
-//   *Config: Pointer to the populated Config struct.
-//   error: Nil if successful, otherwise an error describing what went wrong.
-
 func Load(configFile, secretsFile string) (*Config, error) {
 	var config Config
 	if err := readYAMLFile(configFile, &config); err != nil {
@@ -109,24 +117,64 @@ func Load(configFile, secretsFile string) (*Config, error) {
 }
 
 // readYAMLFile reads and unmarshals YAML data from a file into a provided interface.
-
 // This function reads the contents of a YAML file specified by the filename,
 // and unmarshals the data into the provided interface.
-
-// Attributes:
-//   filename (string): The path to the YAML file to be read.
-//   v (interface{}): A pointer to the variable where the unmarshaled data will be stored.
-
-// Error:
-//   error: An error is returned if the file cannot be read or if the YAML data cannot be unmarshaled.
-
-// Return:
-//   error: nil if successful, otherwise an error describing what went wrong.
-
 func readYAMLFile(filename string, v interface{}) error {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return fmt.Errorf("failed to read file: %w", err)
 	}
-	return yaml.Unmarshal(data, v)
+
+	err = yaml.Unmarshal(data, v)
+	if err != nil {
+		return err
+	}
+
+	// If v is a pointer to a map[string]interface{}, convert nested maps
+	if m, ok := v.(*map[string]interface{}); ok {
+		*m = convertMap(*m)
+	}
+
+	return nil
+}
+
+// convertMap recursively converts map[interface{}]interface{} to map[string]interface{}
+func convertMap(m map[string]interface{}) map[string]interface{} {
+	res := make(map[string]interface{})
+	for k, v := range m {
+		switch v := v.(type) {
+		case map[interface{}]interface{}:
+			res[k] = convertMap(convertMapInterfaceToString(v))
+		case []interface{}:
+			res[k] = convertSlice(v)
+		default:
+			res[k] = v
+		}
+	}
+	return res
+}
+
+// convertMapInterfaceToString converts map[interface{}]interface{} to map[string]interface{}
+func convertMapInterfaceToString(m map[interface{}]interface{}) map[string]interface{} {
+	res := make(map[string]interface{})
+	for k, v := range m {
+		res[fmt.Sprint(k)] = v
+	}
+	return res
+}
+
+// convertSlice recursively converts []interface{} elements
+func convertSlice(s []interface{}) []interface{} {
+	res := make([]interface{}, len(s))
+	for i, v := range s {
+		switch v := v.(type) {
+		case map[interface{}]interface{}:
+			res[i] = convertMap(convertMapInterfaceToString(v))
+		case []interface{}:
+			res[i] = convertSlice(v)
+		default:
+			res[i] = v
+		}
+	}
+	return res
 }

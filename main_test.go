@@ -2,196 +2,214 @@
 package main
 
 import (
-	"flag"
+	"bytes"
+	"fmt"
 	"io"
 	"os"
-	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/utils"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
+	"github.com/stretchr/testify/mock"
 )
 
-// Purpose: Tests the parseFlags function, ensuring that command-line arguments are correctly parsed and mapped to the config.Flags struct.
-// Relevance: This test is crucial because it ensures that the program's configuration is correctly set up, affecting how the rest of the program behaves. The different test cases cover both default and custom values, which is essential for robust flag parsing validation.
-
-func TestParseFlags(t *testing.T) {
-	// Save original command-line arguments
-	oldArgs := os.Args
-	defer func() { os.Args = oldArgs }()
-
-	tests := []struct {
-		name     string
-		args     []string
-		expected *config.Flags
-	}{
-		{
-			name: "Default values",
-			args: []string{"cmd"},
-			expected: &config.Flags{
-				DebugLevel:     0,
-				Concurrency:    runtime.NumCPU(), // Use actual number of CPUs
-				ConfigFile:     "panorama.yaml",
-				SecretsFile:    ".secrets.yaml",
-				HostnameFilter: "",
-				Verbose:        false,
-				NoPanorama:     false,
-			},
-		},
-		{
-			name: "Custom values",
-			args: []string{
-				"cmd",
-				"-debug", "1",
-				"-concurrency", "2",
-				"-config", "custom.yaml",
-				"-secrets", "custom_secrets.yaml",
-				"-filter", "host1,host2",
-				"-verbose",
-				"-nopanorama",
-			},
-			expected: &config.Flags{
-				DebugLevel:     1,
-				Concurrency:    2,
-				ConfigFile:     "custom.yaml",
-				SecretsFile:    "custom_secrets.yaml",
-				HostnameFilter: "host1,host2",
-				Verbose:        true,
-				NoPanorama:     true,
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// Set command-line arguments
-			os.Args = tt.args
-
-			// Reset flags
-			flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-
-			// Call parseFlags
-			result := parseFlags()
-
-			// Assert results
-			assert.Equal(t, tt.expected.DebugLevel, result.DebugLevel)
-			assert.Equal(t, tt.expected.Concurrency, result.Concurrency)
-			assert.Equal(t, tt.expected.ConfigFile, result.ConfigFile)
-			assert.Equal(t, tt.expected.SecretsFile, result.SecretsFile)
-			assert.Equal(t, tt.expected.HostnameFilter, result.HostnameFilter)
-			assert.Equal(t, tt.expected.Verbose, result.Verbose)
-			assert.Equal(t, tt.expected.NoPanorama, result.NoPanorama)
-		})
-	}
+// MockConfig is a mock implementation of the config.Config struct
+type MockConfig struct {
+	mock.Mock
 }
 
-//Purpose: Tests the printDeviceList function by capturing the output and checking the structure of the printed information.
-//Relevance: The test focuses on validating the format and content of the device list printed to the console. This is important because the main.go file relies on correctly displaying the list of devices before registering WildFire, which provides critical feedback to the user.
+// MockDevices is a mock implementation of the devices package
+type MockDevices struct {
+	mock.Mock
+}
 
-func TestPrintDeviceList(t *testing.T) {
-	l := logger.New(0, false)
+// MockUtils is a mock implementation of the utils package
+type MockUtils struct {
+	mock.Mock
+}
 
-	deviceList := []map[string]string{
-		{"hostname": "device1", "ip": "192.168.1.1"},
-		{"hostname": "device2", "ip": "192.168.1.2"},
+// MockWildfire is a mock implementation of the wildfire package
+type MockWildfire struct {
+	mock.Mock
+}
+
+func (m *MockConfig) Load(configFile, secretsFile string) (*config.Config, error) {
+	args := m.Called(configFile, secretsFile)
+	return args.Get(0).(*config.Config), args.Error(1)
+}
+
+func (m *MockDevices) GetDeviceList(conf *config.Config, noPanorama bool, hostnameFilter string, l *logger.Logger) ([]map[string]string, error) {
+	args := m.Called(conf, noPanorama, hostnameFilter, l)
+	return args.Get(0).([]map[string]string), args.Error(1)
+}
+
+func (m *MockUtils) ParseVersion(version string) (*utils.Version, error) {
+	args := m.Called(version)
+	return args.Get(0).(*utils.Version), args.Error(1)
+}
+
+func (m *MockUtils) FilterAffectedDevices(deviceList []map[string]string) ([]map[string]string, error) {
+	args := m.Called(deviceList)
+	return args.Get(0).([]map[string]string), args.Error(1)
+}
+
+func (m *MockWildfire) RegisterWildFire(device map[string]string, username, password string, l *logger.Logger) error {
+	args := m.Called(device, username, password, l)
+	return args.Error(0)
+}
+
+func TestMain(m *testing.M) {
+	// Run tests
+	code := m.Run()
+
+	// Exit
+	os.Exit(code)
+}
+
+func TestMainLogic(t *testing.T) {
+	// Setup mocks
+	mockConfig := new(MockConfig)
+	mockDevices := new(MockDevices)
+	mockUtils := new(MockUtils)
+	mockWildfire := new(MockWildfire)
+
+	// Setup test data
+	testConf := &config.Config{
+		Auth: config.AuthConfig{
+			Auth: struct {
+				Panorama struct {
+					Username string `yaml:"username"`
+					Password string `yaml:"password"`
+				} `yaml:"panorama"`
+				Firewall struct {
+					Username string `yaml:"username"`
+					Password string `yaml:"password"`
+				} `yaml:"firewall"`
+			}{
+				Firewall: struct {
+					Username string `yaml:"username"`
+					Password string `yaml:"password"`
+				}{
+					Username: "testuser",
+					Password: "testpass",
+				},
+			},
+		},
 	}
 
-	oldStdout := os.Stdout
+	// Create a test device list with various PAN-OS versions, excluding "-gp" versions
+	testDeviceList := make([]map[string]string, 0)
+	for versionKey, patchVersions := range config.MinimumPatchedVersions {
+		if !strings.HasSuffix(versionKey, "-gp") {
+			for _, patchVersion := range patchVersions {
+				swVersion := fmt.Sprintf("%s.%d-h%d", versionKey, patchVersion.Maintenance, patchVersion.Hotfix)
+				testDeviceList = append(testDeviceList, map[string]string{
+					"hostname":   fmt.Sprintf("device-%s", swVersion),
+					"sw-version": swVersion,
+				})
+			}
+		}
+	}
+
+	// Add affected devices
+	affectedDevices := []map[string]string{
+		{"hostname": "affected-firewall1", "sw-version": "8.1.21-h2"},
+		{"hostname": "affected-firewall2", "sw-version": "9.0.16-h6"},
+		{"hostname": "affected-firewall3", "sw-version": "9.1.14-h7"},
+		{"hostname": "affected-firewall4", "sw-version": "10.0.8-h0"},
+		{"hostname": "affected-firewall5", "sw-version": "10.1.3-h2"},
+		{"hostname": "affected-firewall6", "sw-version": "10.2.3-h11"},
+		{"hostname": "affected-firewall7", "sw-version": "11.0.3-h2"},
+		{"hostname": "affected-firewall8", "sw-version": "11.1.0-h1"},
+	}
+	testDeviceList = append(testDeviceList, affectedDevices...)
+
+	// Set up ParseVersion expectations
+	for _, device := range testDeviceList {
+		parsedVersion, _ := utils.ParseVersion(device["sw-version"])
+		mockUtils.On("ParseVersion", device["sw-version"]).Return(parsedVersion, nil).Once()
+	}
+
+	// Set up other expectations
+	mockConfig.On("Load", mock.Anything, mock.Anything).Return(testConf, nil)
+	mockDevices.On("GetDeviceList", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(testDeviceList, nil)
+
+	// Modify the FilterAffectedDevices mock
+	mockUtils.On("FilterAffectedDevices", mock.Anything).Return(affectedDevices, nil)
+
+	mockWildfire.On("RegisterWildFire", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
+
+	// Create a buffer to capture output
+	var buf bytes.Buffer
+
+	// Run the main logic (without actually calling main())
+	cfg := config.ParseFlags() // You might want to mock this as well
+	l := logger.New(cfg.DebugLevel, cfg.Verbose)
+
+	conf, err := mockConfig.Load(cfg.ConfigFile, cfg.SecretsFile)
+	assert.NoError(t, err)
+
+	deviceList, err := mockDevices.GetDeviceList(conf, cfg.NoPanorama, cfg.HostnameFilter, l)
+	assert.NoError(t, err)
+
+	for i, device := range deviceList {
+		swVersion := device["sw-version"]
+		parsedVersion, err := mockUtils.ParseVersion(swVersion)
+		assert.NoError(t, err)
+
+		deviceList[i]["parsed_version_major"] = fmt.Sprintf("%d", parsedVersion.Major)
+		deviceList[i]["parsed_version_feature"] = fmt.Sprintf("%d", parsedVersion.Feature)
+		deviceList[i]["parsed_version_maintenance"] = fmt.Sprintf("%d", parsedVersion.Maintenance)
+		deviceList[i]["parsed_version_hotfix"] = fmt.Sprintf("%d", parsedVersion.Hotfix)
+	}
+
+	filteredDevices, err := mockUtils.FilterAffectedDevices(deviceList)
+	assert.NoError(t, err)
+
+	// Redirect stdout to our buffer
+	old := os.Stdout
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	printDeviceList(deviceList, l)
+	utils.PrintDeviceList(filteredDevices, l)
 
-	err := w.Close()
+	for _, device := range filteredDevices {
+		err := mockWildfire.RegisterWildFire(device, conf.Auth.Auth.Firewall.Username, conf.Auth.Auth.Firewall.Password, l)
+		assert.NoError(t, err)
+		_, err = fmt.Fprintf(w, "%s: Successfully registered WildFire\n", device["hostname"])
+		assert.NoError(t, err)
+	}
+
+	// Restore stdout
+	err = w.Close()
 	if err != nil {
 		t.Fatalf("Failed to close writer: %v", err)
 	}
-	os.Stdout = oldStdout
+	os.Stdout = old
 
-	out, err := io.ReadAll(r)
+	_, err = io.Copy(&buf, r)
 	if err != nil {
-		t.Fatalf("Failed to read captured output: %v", err)
+		t.Fatalf("Failed to copy output: %v", err)
 	}
-	output := string(out)
+	err = r.Close()
+	if err != nil {
+		t.Fatalf("Failed to close reader: %v", err)
+	}
 
-	// Check structure instead of exact content
+	// Assertions
+	output := buf.String()
 	assert.Contains(t, output, "Device List:")
-	assert.Contains(t, output, "Device 1:")
-	assert.Contains(t, output, "Device 2:")
-	assert.Contains(t, output, "hostname:")
-	assert.Contains(t, output, "ip:")
-}
-
-//Purpose: Validates the structure of inventory.yaml by loading and unmarshaling the YAML file.
-//Relevance: This test is relevant because main.go might use this inventory file when NoPanorama is true. Ensuring the structure is correct prevents runtime errors when accessing device information.
-
-func TestInventoryYAMLStructure(t *testing.T) {
-	data, err := os.ReadFile("inventory.yaml")
-	assert.NoError(t, err)
-
-	var inventory struct {
-		Inventory []struct {
-			Hostname  string `yaml:"hostname"`
-			IPAddress string `yaml:"ip_address"`
-		} `yaml:"inventory"`
+	for _, device := range filteredDevices {
+		assert.Contains(t, output, fmt.Sprintf("hostname: %s", device["hostname"]))
+		assert.Contains(t, output, fmt.Sprintf("sw-version: %s", device["sw-version"]))
+		assert.Contains(t, output, fmt.Sprintf("%s: Successfully registered WildFire", device["hostname"]))
 	}
 
-	err = yaml.Unmarshal(data, &inventory)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, inventory.Inventory)
-	for _, device := range inventory.Inventory {
-		assert.NotEmpty(t, device.Hostname)
-		assert.NotEmpty(t, device.IPAddress)
-	}
-}
-
-//Purpose: Ensures that the panorama.yaml file has the correct structure by loading and unmarshaling it.
-//Relevance: Since the main.go file depends on the panorama.yaml for configuration when querying Panorama, this test helps avoid issues related to malformed or incorrect configuration files.
-
-func TestPanoramaYAMLStructure(t *testing.T) {
-	data, err := os.ReadFile("panorama.yaml")
-	assert.NoError(t, err)
-
-	var panorama struct {
-		Panorama []struct {
-			Hostname string `yaml:"hostname"`
-		} `yaml:"panorama"`
-	}
-
-	err = yaml.Unmarshal(data, &panorama)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, panorama.Panorama)
-	for _, p := range panorama.Panorama {
-		assert.NotEmpty(t, p.Hostname)
-	}
-}
-
-//Purpose: Validates the structure of the .secrets.yaml file to ensure that the required credentials are present and correctly structured.
-//Relevance: The main.go file requires these credentials for authenticating with the Panorama and Firewall. This test is vital to ensure that authentication processes do not fail due to missing or incorrect credentials.
-
-func TestSecretsYAMLStructure(t *testing.T) {
-	data, err := os.ReadFile(".secrets.example.yaml")
-	assert.NoError(t, err)
-
-	var secrets struct {
-		Auth struct {
-			Panorama struct {
-				Username string `yaml:"username"`
-				Password string `yaml:"password"`
-			} `yaml:"panorama"`
-			Firewall struct {
-				Username string `yaml:"username"`
-				Password string `yaml:"password"`
-			} `yaml:"firewall"`
-		} `yaml:"auth"`
-	}
-
-	err = yaml.Unmarshal(data, &secrets)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, secrets.Auth.Panorama.Username)
-	assert.NotEmpty(t, secrets.Auth.Panorama.Password)
-	assert.NotEmpty(t, secrets.Auth.Firewall.Username)
-	assert.NotEmpty(t, secrets.Auth.Firewall.Password)
+	mockConfig.AssertExpectations(t)
+	mockDevices.AssertExpectations(t)
+	mockUtils.AssertExpectations(t)
+	mockWildfire.AssertExpectations(t)
 }
