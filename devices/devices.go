@@ -269,3 +269,14 @@ func readInventoryFile(filename string) (*config.Inventory, error) {
 
 	return &inventory, nil
 }
+
+func convertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
+	var deviceList []map[string]string
+	for _, device := range inventory.Inventory {
+		deviceList = append(deviceList, map[string]string{
+			"hostname":   device.Hostname,
+			"ip-address": device.IPAddress,
+		})
+	}
+	return deviceList
+}
