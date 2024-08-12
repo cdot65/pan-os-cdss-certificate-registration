@@ -19,6 +19,7 @@ import (
 // MockConfig is a mock implementation of the config.Config struct
 type MockConfig struct {
 	mock.Mock
+	Verbose bool
 }
 
 // MockDevices is a mock implementation of the devices package
@@ -75,6 +76,11 @@ func TestMainLogic(t *testing.T) {
 	mockDevices := new(MockDevices)
 	mockUtils := new(MockUtils)
 	mockWildfire := new(MockWildfire)
+
+	// Create a mock config with a verbose flag
+	mockCfg := &MockConfig{
+		Verbose: true, // or false, depending on what you want to test
+	}
 
 	// Setup test data
 	testConf := &config.Config{
@@ -146,7 +152,7 @@ func TestMainLogic(t *testing.T) {
 	var buf bytes.Buffer
 
 	// Run the main logic (without actually calling main())
-	cfg := config.ParseFlags() // You might want to mock this as well
+	cfg := config.ParseFlags()
 	l := logger.New(cfg.DebugLevel, cfg.Verbose)
 
 	conf, err := mockConfig.Load(cfg.ConfigFile, cfg.SecretsFile)
@@ -174,7 +180,8 @@ func TestMainLogic(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	utils.PrintDeviceList(filteredDevices, l)
+	// Update the PrintDeviceList call
+	utils.PrintDeviceList(filteredDevices, l, mockCfg.Verbose)
 
 	for _, device := range filteredDevices {
 		err := mockWildfire.RegisterWildFire(device, conf.Auth.Auth.Firewall.Username, conf.Auth.Auth.Firewall.Password, l)

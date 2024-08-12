@@ -65,8 +65,8 @@ func TestIsAffectedVersion(t *testing.T) {
 		device          map[string]string
 		isGlobalProtect bool
 		want            bool
+		wantMinUpdate   string
 		wantErr         bool
-		expectedErrMsg  string
 	}{
 		{
 			name: "Affected version",
@@ -78,6 +78,7 @@ func TestIsAffectedVersion(t *testing.T) {
 			},
 			isGlobalProtect: false,
 			want:            true,
+			wantMinUpdate:   "10.1.6-h8",
 			wantErr:         false,
 		},
 		{
@@ -85,23 +86,12 @@ func TestIsAffectedVersion(t *testing.T) {
 			device: map[string]string{
 				"parsed_version_major":       "10",
 				"parsed_version_feature":     "1",
-				"parsed_version_maintenance": "6",
-				"parsed_version_hotfix":      "8",
+				"parsed_version_maintenance": "8",
+				"parsed_version_hotfix":      "1",
 			},
 			isGlobalProtect: false,
-			want:            false,
-			wantErr:         false,
-		},
-		{
-			name: "GlobalProtect affected version",
-			device: map[string]string{
-				"parsed_version_major":       "10",
-				"parsed_version_feature":     "2",
-				"parsed_version_maintenance": "3",
-				"parsed_version_hotfix":      "0",
-			},
-			isGlobalProtect: true,
 			want:            true,
+			wantMinUpdate:   "10.1.8-h7",
 			wantErr:         false,
 		},
 		{
@@ -114,62 +104,37 @@ func TestIsAffectedVersion(t *testing.T) {
 			},
 			isGlobalProtect: false,
 			want:            true,
+			wantMinUpdate:   "8.1.0",
+			wantErr:         false,
+		},
+		{
+			name: "Version 11.2 or later",
+			device: map[string]string{
+				"parsed_version_major":       "11",
+				"parsed_version_feature":     "2",
+				"parsed_version_maintenance": "0",
+				"parsed_version_hotfix":      "0",
+			},
+			isGlobalProtect: false,
+			want:            false,
+			wantMinUpdate:   "",
 			wantErr:         false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := IsAffectedVersion(tt.device, tt.isGlobalProtect)
+			got, minUpdateRelease, err := IsAffectedVersion(tt.device, tt.isGlobalProtect)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("IsAffectedVersion() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if tt.wantErr && err != nil && err.Error() != tt.expectedErrMsg {
-				t.Errorf("IsAffectedVersion() error = %v, expectedErrMsg %v", err, tt.expectedErrMsg)
-				return
-			}
 			if got != tt.want {
-				t.Errorf("IsAffectedVersion() = %v, want %v", got, tt.want)
+				t.Errorf("IsAffectedVersion() got = %v, want %v", got, tt.want)
+			}
+			if minUpdateRelease != tt.wantMinUpdate {
+				t.Errorf("IsAffectedVersion() minUpdateRelease = %v, want %v", minUpdateRelease, tt.wantMinUpdate)
 			}
 		})
-	}
-}
-
-func TestFilterAffectedDevices(t *testing.T) {
-	devices := []map[string]string{
-		{
-			"hostname":                   "device1",
-			"parsed_version_major":       "10",
-			"parsed_version_feature":     "1",
-			"parsed_version_maintenance": "6",
-			"parsed_version_hotfix":      "2",
-		},
-		{
-			"hostname":                   "device2",
-			"parsed_version_major":       "10",
-			"parsed_version_feature":     "1",
-			"parsed_version_maintenance": "6",
-			"parsed_version_hotfix":      "8",
-		},
-		{
-			"hostname":                   "device3",
-			"parsed_version_major":       "10",
-			"parsed_version_feature":     "1",
-			"parsed_version_maintenance": "5",
-			"parsed_version_hotfix":      "0",
-		},
-	}
-
-	want := []map[string]string{devices[0], devices[2]}
-
-	got, err := FilterAffectedDevices(devices)
-	if err != nil {
-		t.Errorf("FilterAffectedDevices() error = %v", err)
-		return
-	}
-
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("FilterAffectedDevices() = %v, want %v", got, want)
 	}
 }

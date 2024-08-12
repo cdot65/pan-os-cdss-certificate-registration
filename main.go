@@ -5,8 +5,11 @@ import (
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/devices"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/pdfgenerate"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/utils"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/wildfire"
+	"log"
+	"strings"
 	"sync"
 )
 
@@ -51,20 +54,23 @@ func main() {
 		deviceList[i]["parsed_version_hotfix"] = fmt.Sprintf("%d", parsedVersion.Hotfix)
 	}
 
-	// Filter affected devices
-	affectedDevices, err := utils.FilterAffectedDevices(deviceList)
+	// Split devices into affected and unaffected
+	affectedDevices, unaffectedDevices, err := utils.SplitDevices(deviceList)
 	if err != nil {
-		l.Fatalf("Failed to filter affected devices: %v", err)
+		l.Fatalf("Failed to split devices: %v", err)
 	}
 
-	// Print affected device list
-	utils.PrintDeviceList(affectedDevices, l)
+	// Print unaffectedDevices device list
+	utils.PrintDeviceList(unaffectedDevices, l, cfg.Verbose)
 
-	// Register WildFire
-	results := make(chan string, len(affectedDevices))
+	// Print message before starting firewall connections
+	utils.PrintStartingFirewallConnections(l)
+
+	// Register WildFire for unaffectedDevices devices
+	results := make(chan string, len(unaffectedDevices))
 	var wg sync.WaitGroup
 
-	for i, device := range affectedDevices {
+	for i, device := range unaffectedDevices {
 		wg.Add(1)
 		go func(dev map[string]string, index int) {
 			defer wg.Done()
@@ -77,12 +83,35 @@ func main() {
 		}(device, i)
 	}
 
-	// Close the results channel when all goroutines are done
-	go func() {
-		wg.Wait()
-		close(results)
-	}()
+	// Wait for all goroutines to finish
+	wg.Wait()
+
+	// Close the results channel
+	close(results)
+
+	// Process results and update unaffectedDevices
+	var processedResults []string
+	for result := range results {
+		processedResults = append(processedResults, result)
+		parts := strings.SplitN(result, ": ", 2)
+		if len(parts) == 2 {
+			hostname, resultText := parts[0], parts[1]
+			for i, device := range unaffectedDevices {
+				if device["hostname"] == hostname {
+					unaffectedDevices[i]["result"] = resultText
+					break
+				}
+			}
+		}
+	}
+
+	// Generate PDF report with all information including WildFire registration results
+	err = pdfgenerate.GeneratePDFReport(deviceList, affectedDevices, unaffectedDevices, "device_report.pdf")
+	if err != nil {
+		log.Fatal("Error generating PDF report:", err)
+	}
 
 	// Print results
-	utils.PrintResults(results, len(affectedDevices), l)
+	utils.PrintResults(processedResults, len(unaffectedDevices), l)
+
 }

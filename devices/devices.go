@@ -139,6 +139,7 @@ func (dm *DeviceManager) getConnectedDevices() ([]map[string]string, error) {
 			"av-version":       entry.AVVersion,
 			"wildfire-version": entry.WildfireVersion,
 			"threat-version":   entry.ThreatVersion,
+			"result":           entry.Result,
 		}
 		deviceList = append(deviceList, device)
 		dm.logger.Debug("Added device to list:", entry.Hostname)
