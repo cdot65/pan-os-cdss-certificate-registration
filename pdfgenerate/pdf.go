@@ -110,7 +110,7 @@ func getDeviceRows(deviceList []map[string]string) []core.Row {
 			text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(3, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+			text.NewCol(2, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(3, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 		),
 	}
@@ -122,7 +122,7 @@ func getDeviceRows(deviceList []map[string]string) []core.Row {
 			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(3, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(2, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(3, device["serial"], props.Text{Size: 7, Align: align.Left}),
 		)
 		if i%2 == 0 {
