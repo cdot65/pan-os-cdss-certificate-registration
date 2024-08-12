@@ -7,10 +7,11 @@ This Go program automates the process of registering WildFire on Palo Alto Netwo
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
-- [Build from Source](#build-from-source)
+- [Run from Source](#run-from-source)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Inventory File](#inventory-file)
+- [PDF Report Generation](#pdf-report-generation)
 - [Output](#output)
 - [Error Handling](#error-handling)
 - [Contributing](#contributing)
@@ -24,18 +25,24 @@ This Go program automates the process of registering WildFire on Palo Alto Netwo
 - Concurrently registers WildFire on multiple firewalls
 - Customizable concurrency level
 - Verbose logging option for debugging
+- Generates a PDF report of device status and WildFire registration results
 
 ## Prerequisites
 
-- Go 1.20 or higher
-  - *only required if you plan on building from source code*
 - Access to a Panorama instance
    - *only required if not using a local inventory file*
 - Credentials stored in a local YAML file
 
 ## Quick Start
 
-1. Download the pre-compiled binary for your system from the [Releases](https://github.com/cdot65/pan-os-cdss-certificate-registration/releases) page.
+1. Download the pre-compiled binary for your system from the [Releases](https://github.com/cdot65/pan-os-cdss-certificate-registration/releases) page. Go is not required to be installed if using the packaged binary.
+
+   - macOS users with Intel CPUs: Use `pan-os-cdss-certificate-registration-darwin-amd64`
+   - macOS users with Apple Silicon CPUs: Use `pan-os-cdss-certificate-registration-darwin-arm64`
+   - Linux users: Use `pan-os-cdss-certificate-registration-linux-amd64`
+   - Windows users: Use `pan-os-cdss-certificate-registration-windows-amd64.exe`
+
+   > macOS devices have strict security guardrails around executing unsigned binaries, either search Google for a solution if you are blocked or consider running the project from the source code (below instructions).
 
 2. Create the required configuration files:
    - `panorama.yaml` (if using Panorama)
@@ -45,8 +52,10 @@ This Go program automates the process of registering WildFire on Palo Alto Netwo
 3. Run the binary:
 
     ```
-    ./pan-os-cdss-certificate-registration [flags]
+    ./pan-os-cdss-certificate-registration-<os>-<arch> [flags]
     ```
+
+   Replace `<os>` and `<arch>` with your operating system and architecture.
 
 Available flags:
 
@@ -58,31 +67,47 @@ Available flags:
 - `-verbose`: Enable verbose logging
 - `-nopanorama`: Use inventory.yaml instead of querying Panorama
 
-## Build from Source
+## Run from Source
 
-1. Clone this repository:
+If you prefer to run from source or build your own binary, follow these steps:
+
+1. Ensure you have Go 1.20 or higher installed.
+
+2. Clone this repository:
 
     ```
     git clone https://github.com/cdot65/pan-os-cdss-certificate-registration.git
     cd pan-os-cdss-certificate-registration
     ```
 
-2. Initialize the project:
+3. Initialize the project:
 
     ```
     go mod init github.com/cdot65/pan-os-cdss-certificate-registration
     ```
 
-3. Install the required dependencies:
+4. Install the required dependencies:
 
     ```
     go mod tidy
     ```
 
-4. Build the binary for your workstation:
+5. Run the program directly:
+
+    ```
+    go run main.go [flags]
+    ```
+
+   Or, optionally build a binary for your system:
 
     ```
     go build main.go
+    ```
+
+   Then run the binary:
+
+    ```
+    ./main [flags]
     ```
 
 ## Configuration
@@ -151,6 +176,12 @@ inventory:
   - hostname: 'firewall-3'
     ip_address: '192.168.1.3'
 ```
+
+## PDF Report Generation
+
+The program generates a PDF report containing detailed information about all devices, including their status and WildFire registration results. This report is saved as `device_report.pdf` in the current directory.
+
+You can view an example of the generated PDF report [here](docs/assets/pdf/device_report.pdf).
 
 ## Output
 
