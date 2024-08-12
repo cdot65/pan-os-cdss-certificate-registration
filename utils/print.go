@@ -25,7 +25,6 @@ func PrintDeviceList(deviceList []map[string]string, l *logger.Logger, verbose b
 				device["parsed_version_hotfix"])
 		}
 		fmt.Println()
-		fmt.Println()
 	}
 }
 

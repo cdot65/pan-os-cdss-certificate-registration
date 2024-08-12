@@ -73,7 +73,7 @@ func GetMaroto(allDevices, affectedDevices, unaffectedDevices []map[string]strin
 		Style: fontstyle.Bold,
 		Align: align.Center,
 	}))
-	m.AddRow(7, text.NewCol(12, "All PAN-OS NGFW Devices", props.Text{
+	m.AddRow(7, text.NewCol(12, "List of all NGFW devices that will be considered for this job", props.Text{
 		Top:   1.5,
 		Size:  9,
 		Style: fontstyle.Bold,
@@ -92,7 +92,7 @@ func GetMaroto(allDevices, affectedDevices, unaffectedDevices []map[string]strin
 		Style: fontstyle.Bold,
 		Align: align.Center,
 	}))
-	m.AddRow(7, text.NewCol(12, "NGFW Devices Requiring PAN-OS Upgrade", props.Text{
+	m.AddRow(7, text.NewCol(12, "These firewalls are running an affected version of PAN-OS and require an upgrade", props.Text{
 		Top:   1.5,
 		Size:  9,
 		Style: fontstyle.Bold,
@@ -111,7 +111,7 @@ func GetMaroto(allDevices, affectedDevices, unaffectedDevices []map[string]strin
 		Style: fontstyle.Bold,
 		Align: align.Center,
 	}))
-	m.AddRow(13, text.NewCol(12, "WildFire Registration Results", props.Text{
+	m.AddRow(7, text.NewCol(12, "Results from logging in over SSH and registering to Wildfire with the device certificate", props.Text{
 		Top:   1.5,
 		Size:  9,
 		Style: fontstyle.Bold,
@@ -233,7 +233,7 @@ func getPageHeader() core.Row {
 		}),
 		col.New(6),
 		col.New(3).Add(
-			text.New("CDSS Certificate Report", props.Text{
+			text.New("CDSS Services Registration With Device Certificate Report", props.Text{
 				Top:   5,
 				Style: fontstyle.BoldItalic,
 				Size:  8,
