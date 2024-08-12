@@ -97,10 +97,13 @@ type DevicesResponse struct {
 
 // Inventory represents the structure of the inventory.yaml file
 type Inventory struct {
-	Inventory []struct {
-		Hostname  string `yaml:"hostname"`
-		IPAddress string `yaml:"ip_address"`
-	} `yaml:"inventory"`
+	Inventory []InventoryDevice `yaml:"inventory"`
+}
+
+// InventoryDevice represents a single device in the inventory
+type InventoryDevice struct {
+	Hostname  string `yaml:"hostname"`
+	IPAddress string `yaml:"ip_address"`
 }
 
 // Load reads configuration and secrets from YAML files and returns a Config struct.
