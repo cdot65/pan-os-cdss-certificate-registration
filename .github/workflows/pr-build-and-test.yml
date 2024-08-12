@@ -15,7 +15,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
-          go-version: '1.20'
+          go-version: '1.21.6'
 
       # Initialize Go Module
       - name: Initialize Go Module
