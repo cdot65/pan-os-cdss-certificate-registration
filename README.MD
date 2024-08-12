@@ -71,7 +71,7 @@ Available flags:
 
 If you prefer to run from source or build your own binary, follow these steps:
 
-1. Ensure you have Go 1.20 or higher installed.
+1. Ensure you have Go 1.21.6 or higher installed.
 
 2. Clone this repository:
 
