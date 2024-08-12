@@ -19,8 +19,8 @@ import (
 )
 
 // GeneratePDFReport creates a PDF report using the maroto library.
-func GeneratePDFReport(allDevices []map[string]string, affectedDevices []map[string]string, reportName string) error {
-	m := GetMaroto(allDevices, affectedDevices)
+func GeneratePDFReport(allDevices, affectedDevices, unaffectedDevices []map[string]string, reportName string) error {
+	m := GetMaroto(allDevices, affectedDevices, unaffectedDevices)
 	document, err := m.Generate()
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func GeneratePDFReport(allDevices []map[string]string, affectedDevices []map[str
 	return nil
 }
 
-func GetMaroto(allDevices []map[string]string, affectedDevices []map[string]string) core.Maroto {
+func GetMaroto(allDevices, affectedDevices, unaffectedDevices []map[string]string) core.Maroto {
 	cfg := config.NewBuilder().
 		WithPageNumber().
 		WithLeftMargin(10).
@@ -67,85 +67,161 @@ func GetMaroto(allDevices []map[string]string, affectedDevices []map[string]stri
 	}
 
 	// All Devices Table
-	m.AddRows(text.NewRow(10, "Device Report", props.Text{
+	m.AddRows(text.NewRow(10, "All PAN-OS NGFW Devices", props.Text{
 		Top:   3,
 		Size:  12,
 		Style: fontstyle.Bold,
 		Align: align.Center,
 	}))
-
-	m.AddRow(7,
-		text.NewCol(12, "All PAN-OS NGFW Devices", props.Text{
-			Top:   1.5,
-			Size:  9,
-			Style: fontstyle.Bold,
-			Align: align.Center,
-			Color: &props.WhiteColor,
-		}),
-	).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
-
-	m.AddRows(getDeviceRows(allDevices, false)...)
+	m.AddRow(7, text.NewCol(12, "All PAN-OS NGFW Devices", props.Text{
+		Top:   1.5,
+		Size:  9,
+		Style: fontstyle.Bold,
+		Align: align.Center,
+		Color: &props.WhiteColor,
+	})).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
+	m.AddRows(getDeviceRows(allDevices, "allDevices")...)
 
 	// Add some space between tables
 	m.AddRow(10, col.New(12))
 
 	// Affected Devices Table
-	m.AddRow(7,
-		text.NewCol(12, "NGFW requiring a PAN-OS upgrade", props.Text{
-			Top:   1.5,
-			Size:  9,
-			Style: fontstyle.Bold,
-			Align: align.Center,
-			Color: &props.WhiteColor,
-		}),
-	).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
+	m.AddRows(text.NewRow(10, "NGFW Devices Requiring PAN-OS Upgrade", props.Text{
+		Top:   3,
+		Size:  12,
+		Style: fontstyle.Bold,
+		Align: align.Center,
+	}))
+	m.AddRow(7, text.NewCol(12, "NGFW Devices Requiring PAN-OS Upgrade", props.Text{
+		Top:   1.5,
+		Size:  9,
+		Style: fontstyle.Bold,
+		Align: align.Center,
+		Color: &props.WhiteColor,
+	})).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
+	m.AddRows(getDeviceRows(affectedDevices, "affectedDevices")...)
 
-	m.AddRows(getDeviceRows(affectedDevices, true)...)
+	// Add some space between tables
+	m.AddRow(10, col.New(12))
+
+	// Unaffected Devices Table
+	m.AddRows(text.NewRow(10, "WildFire Registration Results", props.Text{
+		Top:   3,
+		Size:  12,
+		Style: fontstyle.Bold,
+		Align: align.Center,
+	}))
+	m.AddRow(7, text.NewCol(12, "WildFire Registration Results", props.Text{
+		Top:   1.5,
+		Size:  9,
+		Style: fontstyle.Bold,
+		Align: align.Center,
+		Color: &props.WhiteColor,
+	})).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
+	m.AddRows(getDeviceRows(affectedDevices, "unaffectedDevices")...)
 
 	return m
+
 }
 
-func getDeviceRows(deviceList []map[string]string, isAffectedDevices bool) []core.Row {
-	rows := []core.Row{
-		row.New(5).Add(
-			text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(2, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(2, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		),
+func getDeviceRows(deviceList []map[string]string, tableType string) []core.Row {
+	var headerRow core.Row
+	var contentRows []core.Row
+
+	switch tableType {
+	case "allDevices":
+		headerRow = getAllDevicesHeaderRow()
+		contentRows = getAllDevicesContentRows(deviceList)
+	case "affectedDevices":
+		headerRow = getAffectedDevicesHeaderRow()
+		contentRows = getAffectedDevicesContentRows(deviceList)
+	case "unaffectedDevices":
+		headerRow = getUnaffectedDevicesHeaderRow()
+		contentRows = getUnaffectedDevicesContentRows(deviceList)
+	default:
+		log.Fatalf("Unknown table type: %s", tableType)
 	}
 
-	if isAffectedDevices {
-		rows[0].Add(text.NewCol(2, "Min Update", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}))
-	}
+	return append([]core.Row{headerRow}, contentRows...)
+}
 
-	var contentsRow []core.Row
+func getAllDevicesHeaderRow() core.Row {
+	return row.New(5).Add(
+		text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(3, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(3, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+	)
+}
 
+func getAffectedDevicesHeaderRow() core.Row {
+	return row.New(5).Add(
+		text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Min Update", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+	)
+}
+
+func getUnaffectedDevicesHeaderRow() core.Row {
+	return row.New(5).Add(
+		text.NewCol(6, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(6, "Result", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+	)
+}
+
+func getAllDevicesContentRows(deviceList []map[string]string) []core.Row {
+	var rows []core.Row
 	for i, device := range deviceList {
-		cols := []core.Col{
+		r := row.New(4).Add(
+			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, device["serial"], props.Text{Size: 7, Align: align.Left}),
+		)
+		if i%2 == 0 {
+			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
+		}
+		rows = append(rows, r)
+	}
+	return rows
+}
+
+func getAffectedDevicesContentRows(deviceList []map[string]string) []core.Row {
+	var rows []core.Row
+	for i, device := range deviceList {
+		r := row.New(4).Add(
 			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["serial"], props.Text{Size: 7, Align: align.Left}),
-		}
-
-		if isAffectedDevices {
-			cols = append(cols, text.NewCol(2, device["minimumUpdateRelease"], props.Text{Size: 7, Align: align.Left}))
-		}
-
-		r := row.New(4).Add(cols...)
+			text.NewCol(2, device["minimumUpdateRelease"], props.Text{Size: 7, Align: align.Left}),
+		)
 		if i%2 == 0 {
-			gray := getGrayColor()
-			r.WithStyle(&props.Cell{BackgroundColor: gray})
+			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
 		}
-
-		contentsRow = append(contentsRow, r)
+		rows = append(rows, r)
 	}
+	return rows
+}
 
-	rows = append(rows, contentsRow...)
-
+func getUnaffectedDevicesContentRows(deviceList []map[string]string) []core.Row {
+	var rows []core.Row
+	for i, device := range deviceList {
+		r := row.New(4).Add(
+			text.NewCol(6, device["hostname"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(6, device["result"], props.Text{Size: 7, Align: align.Left}),
+		)
+		if i%2 == 0 {
+			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
+		}
+		rows = append(rows, r)
+	}
 	return rows
 }
 
