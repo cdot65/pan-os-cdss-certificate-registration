@@ -81,6 +81,7 @@ type DeviceEntry struct {
 	AVVersion       string `xml:"av-version"`
 	WildfireVersion string `xml:"wildfire-version"`
 	ThreatVersion   string `xml:"threat-version"`
+	Result          string `json:"result,omitempty"`
 }
 
 // DevicesResponse represents the structure of the XML response from Panorama.
