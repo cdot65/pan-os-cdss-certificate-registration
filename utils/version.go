@@ -116,23 +116,26 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, st
 	return false, "", nil
 }
 
-func FilterAffectedDevices(deviceList []map[string]string) ([]map[string]string, error) {
-	var affectedDevices []map[string]string
-
+func SplitDevices(deviceList []map[string]string) (affected []map[string]string, unaffected []map[string]string, err error) {
 	for _, device := range deviceList {
 		isAffected, minUpdateRelease, err := IsAffectedVersion(device, false) // Assuming no Global Protect for now
 		if err != nil {
-			return nil, fmt.Errorf("error checking device %s: %v", device["hostname"], err)
+			return nil, nil, fmt.Errorf("error checking device %s: %v", device["hostname"], err)
 		}
+
+		deviceCopy := make(map[string]string)
+		for k, v := range device {
+			deviceCopy[k] = v
+		}
+
 		if isAffected {
-			affectedDevice := make(map[string]string)
-			for k, v := range device {
-				affectedDevice[k] = v
-			}
-			affectedDevice["minimumUpdateRelease"] = minUpdateRelease
-			affectedDevices = append(affectedDevices, affectedDevice)
+			deviceCopy["minimumUpdateRelease"] = minUpdateRelease
+			affected = append(affected, deviceCopy)
+		} else {
+			deviceCopy["result"] = "Not affected" // Default result for unaffected devices
+			unaffected = append(unaffected, deviceCopy)
 		}
 	}
 
-	return affectedDevices, nil
+	return affected, unaffected, nil
 }
