@@ -25,9 +25,9 @@ jobs:
       - name: Clear module cache
         run: go clean -modcache
 
-      # Install maroto package
-      - name: Install maroto package
-        run: go get github.com/johnfercher/maroto/v2@latest
+#      # Install maroto package
+#      - name: Install maroto package
+#        run: go get github.com/johnfercher/maroto/v2@latest
 
       # Tidy up dependencies
       - name: Tidy Go Module
