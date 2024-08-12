@@ -111,14 +111,14 @@ func GetMaroto(allDevices, affectedDevices, unaffectedDevices []map[string]strin
 		Style: fontstyle.Bold,
 		Align: align.Center,
 	}))
-	m.AddRow(7, text.NewCol(12, "WildFire Registration Results", props.Text{
+	m.AddRow(13, text.NewCol(12, "WildFire Registration Results", props.Text{
 		Top:   1.5,
 		Size:  9,
 		Style: fontstyle.Bold,
 		Align: align.Center,
 		Color: &props.WhiteColor,
 	})).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
-	m.AddRows(getDeviceRows(affectedDevices, "unaffectedDevices")...)
+	m.AddRows(getDeviceRows(unaffectedDevices, "unaffectedDevices")...)
 
 	return m
 
@@ -168,8 +168,8 @@ func getAffectedDevicesHeaderRow() core.Row {
 
 func getUnaffectedDevicesHeaderRow() core.Row {
 	return row.New(5).Add(
-		text.NewCol(6, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		text.NewCol(6, "Result", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(10, "Result", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 	)
 }
 
@@ -213,9 +213,9 @@ func getAffectedDevicesContentRows(deviceList []map[string]string) []core.Row {
 func getUnaffectedDevicesContentRows(deviceList []map[string]string) []core.Row {
 	var rows []core.Row
 	for i, device := range deviceList {
-		r := row.New(4).Add(
-			text.NewCol(6, device["hostname"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(6, device["result"], props.Text{Size: 7, Align: align.Left}),
+		r := row.New(6).Add(
+			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(10, device["result"], props.Text{Size: 7, Align: align.Left}),
 		)
 		if i%2 == 0 {
 			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
