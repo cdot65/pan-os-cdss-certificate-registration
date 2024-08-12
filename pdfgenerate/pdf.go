@@ -69,6 +69,7 @@ func GetMaroto(allDevices []map[string]string, affectedDevices []map[string]stri
 	// All Devices Table
 	m.AddRows(text.NewRow(10, "Device Report", props.Text{
 		Top:   3,
+		Size:  12,
 		Style: fontstyle.Bold,
 		Align: align.Center,
 	}))
@@ -83,7 +84,7 @@ func GetMaroto(allDevices []map[string]string, affectedDevices []map[string]stri
 		}),
 	).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
 
-	m.AddRows(getDeviceRows(allDevices)...)
+	m.AddRows(getDeviceRows(allDevices, false)...)
 
 	// Add some space between tables
 	m.AddRow(10, col.New(12))
@@ -99,32 +100,42 @@ func GetMaroto(allDevices []map[string]string, affectedDevices []map[string]stri
 		}),
 	).WithStyle(&props.Cell{BackgroundColor: darkGrayColor})
 
-	m.AddRows(getDeviceRows(affectedDevices)...)
+	m.AddRows(getDeviceRows(affectedDevices, true)...)
 
 	return m
 }
 
-func getDeviceRows(deviceList []map[string]string) []core.Row {
+func getDeviceRows(deviceList []map[string]string, isAffectedDevices bool) []core.Row {
 	rows := []core.Row{
 		row.New(5).Add(
 			text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 			text.NewCol(2, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-			text.NewCol(3, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+			text.NewCol(2, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 		),
+	}
+
+	if isAffectedDevices {
+		rows[0].Add(text.NewCol(2, "Min Update", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}))
 	}
 
 	var contentsRow []core.Row
 
 	for i, device := range deviceList {
-		r := row.New(4).Add(
+		cols := []core.Col{
 			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(3, device["serial"], props.Text{Size: 7, Align: align.Left}),
-		)
+			text.NewCol(2, device["serial"], props.Text{Size: 7, Align: align.Left}),
+		}
+
+		if isAffectedDevices {
+			cols = append(cols, text.NewCol(2, device["minimumUpdateRelease"], props.Text{Size: 7, Align: align.Left}))
+		}
+
+		r := row.New(4).Add(cols...)
 		if i%2 == 0 {
 			gray := getGrayColor()
 			r.WithStyle(&props.Cell{BackgroundColor: gray})
@@ -181,9 +192,9 @@ func getDarkGrayColor() *props.Color {
 
 func getGrayColor() *props.Color {
 	return &props.Color{
-		Red:   200,
-		Green: 200,
-		Blue:  200,
+		Red:   222,
+		Green: 222,
+		Blue:  222,
 	}
 }
 

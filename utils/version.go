@@ -74,8 +74,7 @@ func (v *Version) IsLessThan(other *Version) bool {
 	return v.Hotfix < other.Hotfix
 }
 
-// IsAffectedVersion checks if a given version is affected (needs to be patched)
-func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, error) {
+func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, string, error) {
 	major, _ := strconv.Atoi(device["parsed_version_major"])
 	feature, _ := strconv.Atoi(device["parsed_version_feature"])
 	maintenance, _ := strconv.Atoi(device["parsed_version_maintenance"])
@@ -83,7 +82,7 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, er
 
 	// Check if the version is 11.2 or later
 	if major > 11 || (major == 11 && feature >= 2) {
-		return false, nil // Versions 11.2 and later are not affected
+		return false, "", nil // Versions 11.2 and later are not affected
 	}
 
 	v := &Version{
@@ -102,34 +101,36 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, er
 	if !ok {
 		// If the feature release is not in MinimumPatchedVersions
 		if v.Major < 8 || (v.Major == 8 && v.Feature < 1) {
-			return true, nil // Versions earlier than 8.1 are considered affected
+			return true, "8.1.0", nil // Versions earlier than 8.1 are considered affected
 		}
-		return false, fmt.Errorf("unknown feature release: %s", featureRelease)
+		return false, "", fmt.Errorf("unknown feature release: %s", featureRelease)
 	}
 
 	for _, minVersion := range minVersions {
-		if v.Maintenance == minVersion.Maintenance {
-			return v.Hotfix < minVersion.Hotfix, nil
-		}
-		if v.Maintenance < minVersion.Maintenance {
-			return true, nil
+		if v.Maintenance < minVersion.Maintenance || (v.Maintenance == minVersion.Maintenance && v.Hotfix < minVersion.Hotfix) {
+			minUpdateRelease := fmt.Sprintf("%s.%d-h%d", featureRelease, minVersion.Maintenance, minVersion.Hotfix)
+			return true, minUpdateRelease, nil
 		}
 	}
 
-	return false, nil
+	return false, "", nil
 }
 
-// FilterAffectedDevices filters the device list to only include affected devices
 func FilterAffectedDevices(deviceList []map[string]string) ([]map[string]string, error) {
 	var affectedDevices []map[string]string
 
 	for _, device := range deviceList {
-		isAffected, err := IsAffectedVersion(device, false) // Assuming no Global Protect for now
+		isAffected, minUpdateRelease, err := IsAffectedVersion(device, false) // Assuming no Global Protect for now
 		if err != nil {
 			return nil, fmt.Errorf("error checking device %s: %v", device["hostname"], err)
 		}
 		if isAffected {
-			affectedDevices = append(affectedDevices, device)
+			affectedDevice := make(map[string]string)
+			for k, v := range device {
+				affectedDevice[k] = v
+			}
+			affectedDevice["minimumUpdateRelease"] = minUpdateRelease
+			affectedDevices = append(affectedDevices, affectedDevice)
 		}
 	}
 
