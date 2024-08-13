@@ -43,7 +43,7 @@ func (dm *DeviceManager) initializePanoramaClient() {
 	dm.logger.Info("Panorama client initialized for", pano.Hostname)
 }
 
-func (dm *DeviceManager) getConnectedDevices() ([]map[string]string, error) {
+func (dm *DeviceManager) getDevicesFromPanorama() ([]map[string]string, error) {
 	cmd := "<show><devices><connected/></devices></show>"
 	dm.logger.Debug("Sending command to get connected devices")
 	response, err := dm.panosClient.Op(cmd, "", nil, nil)
