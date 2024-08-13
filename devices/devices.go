@@ -24,7 +24,9 @@ type DeviceManager struct {
 	panosClientFactory PanosClientFactory
 }
 
-// NewDeviceManager creates a new DeviceManager
+// NewDeviceManager creates a new instance of DeviceManager with the provided configuration and logger.
+// The panosClientFactory field is set to nil initially and can be set later based on the workflow.
+// The function returns a pointer to the created DeviceManager.
 func NewDeviceManager(conf *config.Config, l *logger.Logger) *DeviceManager {
 	return &DeviceManager{
 		config:             conf,
