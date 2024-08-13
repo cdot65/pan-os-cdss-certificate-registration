@@ -11,7 +11,7 @@ import (
 )
 
 // defaultPanoramaClientFactory creates a real Panorama client
-var defaultPanoramaClientFactory = func(hostname, username, password string) PanosClient {
+func defaultPanoramaClientFactory(hostname, username, password string) PanosClient {
 	return &pango.Panorama{
 		Client: pango.Client{
 			Hostname: hostname,
@@ -22,31 +22,32 @@ var defaultPanoramaClientFactory = func(hostname, username, password string) Pan
 	}
 }
 
-func (dm *DeviceManager) initializePanoramaClient() {
+// getDevicesFromPanorama retrieves the devices from Panorama and collects their information.
+// It returns a list of devices as an array of maps, where each map contains the device information.
+// If any errors occur during the retrieval process, an error is returned.
+func (dm *DeviceManager) getDevicesFromPanorama() ([]map[string]string, error) {
 	if len(dm.config.Panorama) == 0 {
-		dm.logger.Fatalf("No Panorama configuration found in the YAML file")
+		return nil, fmt.Errorf("no Panorama configuration found in the YAML file")
 	}
 
 	// Use the first Panorama configuration
 	pano := dm.config.Panorama[0]
 
-	dm.panosClient = defaultPanoramaClientFactory(
+	panoramaClient := dm.panosClientFactory(
 		pano.Hostname,
 		dm.config.Auth.Credentials.Panorama.Username,
 		dm.config.Auth.Credentials.Panorama.Password,
 	)
 
 	dm.logger.Info("Initializing Panorama client for", pano.Hostname)
-	if err := dm.panosClient.Initialize(); err != nil {
-		dm.logger.Fatalf("Failed to initialize Panorama client: %v", err)
+	if err := panoramaClient.Initialize(); err != nil {
+		return nil, fmt.Errorf("failed to initialize Panorama client: %v", err)
 	}
 	dm.logger.Info("Panorama client initialized for", pano.Hostname)
-}
 
-func (dm *DeviceManager) getDevicesFromPanorama() ([]map[string]string, error) {
 	cmd := "<show><devices><connected/></devices></show>"
 	dm.logger.Debug("Sending command to get connected devices")
-	response, err := dm.panosClient.Op(cmd, "", nil, nil)
+	response, err := panoramaClient.Op(cmd, "", nil, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to perform op command: %w", err)
 	}
@@ -82,6 +83,12 @@ func (dm *DeviceManager) getDevicesFromPanorama() ([]map[string]string, error) {
 	}
 
 	dm.logger.Debug("Total devices in list:", len(deviceList))
+
+	// Apply hostname filter if it exists in the config
+	if dm.config.HostnameFilter != "" {
+		deviceList = filterDevices(deviceList, strings.Split(dm.config.HostnameFilter, ","), dm.logger)
+	}
+
 	return deviceList, nil
 }
 
