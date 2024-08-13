@@ -85,7 +85,7 @@ func TestMainLogic(t *testing.T) {
 	// Setup test data
 	testConf := &config.Config{
 		Auth: config.AuthConfig{
-			Auth: struct {
+			Credentials: struct {
 				Panorama struct {
 					Username string `yaml:"username"`
 					Password string `yaml:"password"`
@@ -184,7 +184,7 @@ func TestMainLogic(t *testing.T) {
 	utils.PrintDeviceList(filteredDevices, l, mockCfg.Verbose)
 
 	for _, device := range filteredDevices {
-		err := mockWildfire.RegisterWildFire(device, conf.Auth.Auth.Firewall.Username, conf.Auth.Auth.Firewall.Password, l)
+		err := mockWildfire.RegisterWildFire(device, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)
 		assert.NoError(t, err)
 		_, err = fmt.Fprintf(w, "%s: Successfully registered WildFire\n", device["hostname"])
 		assert.NoError(t, err)

@@ -32,8 +32,8 @@ func (dm *DeviceManager) initializePanoramaClient() {
 
 	dm.panosClient = defaultPanoramaClientFactory(
 		pano.Hostname,
-		dm.config.Auth.Auth.Panorama.Username,
-		dm.config.Auth.Auth.Panorama.Password,
+		dm.config.Auth.Credentials.Panorama.Username,
+		dm.config.Auth.Credentials.Panorama.Password,
 	)
 
 	dm.logger.Info("Initializing Panorama client for", pano.Hostname)

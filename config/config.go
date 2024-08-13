@@ -56,7 +56,7 @@ type Config struct {
 
 // AuthConfig represents the authentication configuration.
 type AuthConfig struct {
-	Auth struct {
+	Credentials struct {
 		Panorama struct {
 			Username string `yaml:"username"`
 			Password string `yaml:"password"`

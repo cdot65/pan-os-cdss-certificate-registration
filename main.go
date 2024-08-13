@@ -79,7 +79,7 @@ func main() {
 		wg.Add(1)
 		go func(dev map[string]string, index int) {
 			defer wg.Done()
-			err := wildfire.RegisterWildFire(dev, conf.Auth.Auth.Firewall.Username, conf.Auth.Auth.Firewall.Password, l)
+			err := wildfire.RegisterWildFire(dev, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)
 			if err != nil {
 				results <- fmt.Sprintf("%s: Failed to register WildFire - %v", dev["hostname"], err)
 			} else {

@@ -114,7 +114,7 @@ func TestGetDevicesFromInventory(t *testing.T) {
 	mockClient.AssertExpectations(t)
 }
 
-func TestGetConnectedDevices(t *testing.T) {
+func TestgetDevicesFromPanorama(t *testing.T) {
 	conf := &config.Config{}
 	l := logger.New(0, false)
 	dm := NewDeviceManager(conf, l)
@@ -137,7 +137,7 @@ func TestGetConnectedDevices(t *testing.T) {
 
 	dm.panosClient = mockClient
 
-	devices, err := dm.getConnectedDevices()
+	devices, err := dm.getDevicesFromPanorama()
 	assert.NoError(t, err)
 	assert.Len(t, devices, 1)
 	assert.Equal(t, "firewall1", devices[0]["hostname"])
@@ -154,7 +154,7 @@ func TestInitializePanoramaClient(t *testing.T) {
 			Hostname string `yaml:"hostname"`
 		}{{Hostname: "panorama.example.com"}},
 		Auth: config.AuthConfig{
-			Auth: struct {
+			Credentials: struct {
 				Panorama struct {
 					Username string `yaml:"username"`
 					Password string `yaml:"password"`

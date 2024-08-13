@@ -97,7 +97,7 @@ auth:
 					{Hostname: "test-panorama.example.com"},
 				}),
 				Auth: AuthConfig{
-					Auth: struct {
+					Credentials: struct {
 						Panorama struct {
 							Username string `yaml:"username"`
 							Password string `yaml:"password"`

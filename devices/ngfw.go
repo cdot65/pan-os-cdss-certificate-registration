@@ -48,8 +48,8 @@ func (dm *DeviceManager) getDevicesFromInventory() ([]map[string]string, error) 
 
 			ngfwClient := dm.panosClientFactory(
 				device.IPAddress,
-				dm.config.Auth.Auth.Firewall.Username,
-				dm.config.Auth.Auth.Firewall.Password,
+				dm.config.Auth.Credentials.Firewall.Username,
+				dm.config.Auth.Credentials.Firewall.Password,
 			)
 
 			dm.logger.Info("Initializing NGFW client for", device.Hostname)
