@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
-	"strings"
 )
 
 // PanosClient interface for the PAN-OS operations we need
@@ -23,19 +22,6 @@ type DeviceManager struct {
 	logger             *logger.Logger
 	panosClient        PanosClient
 	panosClientFactory PanosClientFactory
-	inventoryReader    func(string) (*config.Inventory, error)
-}
-
-// Used in tests only
-func convertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
-	var deviceList []map[string]string
-	for _, device := range inventory.Inventory {
-		deviceList = append(deviceList, map[string]string{
-			"hostname":   device.Hostname,
-			"ip-address": device.IPAddress,
-		})
-	}
-	return deviceList
 }
 
 // NewDeviceManager creates a new DeviceManager
@@ -43,35 +29,38 @@ func NewDeviceManager(conf *config.Config, l *logger.Logger) *DeviceManager {
 	return &DeviceManager{
 		config:             conf,
 		logger:             l,
-		inventoryReader:    readInventoryFile,
-		panosClientFactory: defaultPanosClientFactory,
+		panosClientFactory: nil, // This is set this later based on the workflow
 	}
 }
 
-// GetDeviceList retrieves a list of devices based on configuration and filters.
+// GetDeviceList retrieves a list of devices and their information.
+// If noPanorama is true, it retrieves the devices from the local inventory file.
+// If noPanorama is false, it retrieves the devices from Panorama.
+// The hostnameFilter parameter can be used to filter the devices based on their hostname.
+// It returns the list of devices as an array of maps, where each map contains the device information.
 func (dm *DeviceManager) GetDeviceList(noPanorama bool, hostnameFilter string) ([]map[string]string, error) {
+	if dm.panosClientFactory == nil {
+		if noPanorama {
+			dm.SetNgfwWorkflow()
+		} else {
+			dm.SetPanoramaWorkflow()
+		}
+	}
+
 	var deviceList []map[string]string
 	var err error
 
 	if noPanorama {
-		inventory, err := dm.inventoryReader("inventory.yaml")
-		if err != nil {
-			return nil, fmt.Errorf("failed to read inventory file: %w", err)
-		}
-		deviceList, err = dm.getDevicesFromInventory(inventory)
+		deviceList, err = dm.getDevicesFromInventory()
 	} else {
 		if dm.panosClient == nil {
 			dm.initializePanoramaClient()
 		}
-		deviceList, err = dm.getConnectedDevices()
+		deviceList, err = dm.getDevicesFromPanorama()
 	}
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get devices: %w", err)
-	}
-
-	if hostnameFilter != "" {
-		deviceList = filterDevices(deviceList, strings.Split(hostnameFilter, ","), dm.logger)
 	}
 
 	return deviceList, nil
@@ -80,4 +69,14 @@ func (dm *DeviceManager) GetDeviceList(noPanorama bool, hostnameFilter string) (
 // SetPanosClientFactory sets a custom PAN-OS client factory
 func (dm *DeviceManager) SetPanosClientFactory(factory PanosClientFactory) {
 	dm.panosClientFactory = factory
+}
+
+// SetNgfwWorkflow sets the PAN-OS client factory to create a real PAN-OS client for NGFW.
+func (dm *DeviceManager) SetNgfwWorkflow() {
+	dm.panosClientFactory = defaultNgfwClientFactory
+}
+
+// SetPanoramaWorkflow sets the PAN-OS client factory to create a real Panorama client.
+func (dm *DeviceManager) SetPanoramaWorkflow() {
+	dm.panosClientFactory = defaultPanoramaClientFactory
 }
