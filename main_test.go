@@ -152,13 +152,14 @@ func TestMainLogic(t *testing.T) {
 	var buf bytes.Buffer
 
 	// Run the main logic (without actually calling main())
-	cfg := config.ParseFlags()
-	l := logger.New(cfg.DebugLevel, cfg.Verbose)
+	flags, cfg := config.ParseFlags()
+	l := logger.New(flags.DebugLevel, flags.Verbose)
 
-	conf, err := mockConfig.Load(cfg.ConfigFile, cfg.SecretsFile)
+	// Use cfg instead of conf for the initial configuration
+	conf, err := mockConfig.Load(flags.ConfigFile, flags.SecretsFile)
 	assert.NoError(t, err)
 
-	deviceList, err := mockDevices.GetDeviceList(conf, cfg.NoPanorama, cfg.HostnameFilter, l)
+	deviceList, err := mockDevices.GetDeviceList(conf, flags.NoPanorama, cfg.HostnameFilter, l)
 	assert.NoError(t, err)
 
 	for i, device := range deviceList {
