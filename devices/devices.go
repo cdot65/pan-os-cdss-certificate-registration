@@ -20,7 +20,6 @@ type PanosClientFactory func(hostname, username, password string) PanosClient
 type DeviceManager struct {
 	config             *config.Config
 	logger             *logger.Logger
-	panosClient        PanosClient
 	panosClientFactory PanosClientFactory
 }
 
@@ -31,16 +30,15 @@ func NewDeviceManager(conf *config.Config, l *logger.Logger) *DeviceManager {
 	return &DeviceManager{
 		config:             conf,
 		logger:             l,
-		panosClientFactory: nil, // This is set this later based on the workflow
+		panosClientFactory: nil, // This is set later based on the workflow
 	}
 }
 
 // GetDeviceList retrieves a list of devices and their information.
 // If noPanorama is true, it retrieves the devices from the local inventory file.
 // If noPanorama is false, it retrieves the devices from Panorama.
-// The hostnameFilter parameter can be used to filter the devices based on their hostname.
 // It returns the list of devices as an array of maps, where each map contains the device information.
-func (dm *DeviceManager) GetDeviceList(noPanorama bool, hostnameFilter string) ([]map[string]string, error) {
+func (dm *DeviceManager) GetDeviceList(noPanorama bool) ([]map[string]string, error) {
 	if dm.panosClientFactory == nil {
 		if noPanorama {
 			dm.SetNgfwWorkflow()
@@ -55,9 +53,6 @@ func (dm *DeviceManager) GetDeviceList(noPanorama bool, hostnameFilter string) (
 	if noPanorama {
 		deviceList, err = dm.getDevicesFromInventory()
 	} else {
-		if dm.panosClient == nil {
-			dm.initializePanoramaClient()
-		}
 		deviceList, err = dm.getDevicesFromPanorama()
 	}
 
@@ -66,11 +61,6 @@ func (dm *DeviceManager) GetDeviceList(noPanorama bool, hostnameFilter string) (
 	}
 
 	return deviceList, nil
-}
-
-// SetPanosClientFactory sets a custom PAN-OS client factory
-func (dm *DeviceManager) SetPanosClientFactory(factory PanosClientFactory) {
-	dm.panosClientFactory = factory
 }
 
 // SetNgfwWorkflow sets the PAN-OS client factory to create a real PAN-OS client for NGFW.
