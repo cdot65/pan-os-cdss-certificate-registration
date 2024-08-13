@@ -150,13 +150,13 @@ func readInventoryFile(filename string) (*config.Inventory, error) {
 	return &inventory, nil
 }
 
-// TestConvertInventoryToDeviceList converts the devices in an inventory to a list of maps with "hostname" and "ip-address" keys.
+// ConvertInventoryToDeviceList converts the devices in an inventory to a list of maps with "hostname" and "ip-address" keys.
 // It takes in an `inventory` of type `*config.Inventory` and returns a slice of `map[string]string`.
 // Each map in the slice represents a device in the inventory, with "hostname" as the key and the device's hostname as the value,
 // and "ip-address" as the key and the device's IP address as the value.
 // The function iterates over the devices in the inventory and appends a map for each device to the `deviceList` slice.
 // Finally, it returns the `deviceList` slice.
-func TestConvertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
+func ConvertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
 	var deviceList []map[string]string
 	for _, device := range inventory.Inventory {
 		deviceList = append(deviceList, map[string]string{
