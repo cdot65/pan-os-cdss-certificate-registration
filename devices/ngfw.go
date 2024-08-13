@@ -12,7 +12,8 @@ import (
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 )
 
-// defaultNgfwClientFactory creates a real PAN-OS client for NGFW
+// defaultNgfwClientFactory is a function that creates a PAN-OS client for NGFW with the given hostname, username, and password.
+// It returns a PanosClient interface that can be used for PAN-OS operations.
 func defaultNgfwClientFactory(hostname, username, password string) PanosClient {
 	return &pango.Firewall{
 		Client: pango.Client{
@@ -24,6 +25,11 @@ func defaultNgfwClientFactory(hostname, username, password string) PanosClient {
 	}
 }
 
+// getDevicesFromInventory retrieves the devices from the inventory file and
+// collects their information by initializing the NGFW client for each device.
+// It returns a list of devices as an array of maps, where each map contains
+// the device information. If any errors occur during the retrieval process,
+// an error is returned.
 func (dm *DeviceManager) getDevicesFromInventory() ([]map[string]string, error) {
 	inventory, err := readInventoryFile("inventory.yaml")
 	if err != nil {
@@ -86,7 +92,11 @@ func (dm *DeviceManager) getDevicesFromInventory() ([]map[string]string, error) 
 	return deviceList, nil
 }
 
-// getNgfwDeviceInfo retrieves device information from a single NGFW
+// getNgfwDeviceInfo retrieves the device information from a specific NGFW device using the provided PanosClient and hostname.
+// It sends an "op" command to the device to get the system information.
+// The method returns a map of device information, including serial number, hostname, IP address, model, software version,
+// application version, antivirus version, Wildfire version, and threat version.
+// If any errors occur during the process, an error is returned.
 func (dm *DeviceManager) getNgfwDeviceInfo(client PanosClient, hostname string) (map[string]string, error) {
 	cmd := "<show><system><info/></system></show>"
 	response, err := client.Op(cmd, "", nil, nil)
@@ -125,7 +135,6 @@ func (dm *DeviceManager) getNgfwDeviceInfo(client PanosClient, hostname string) 
 	}, nil
 }
 
-// readInventoryFile reads and parses an inventory file in YAML format.
 func readInventoryFile(filename string) (*config.Inventory, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -141,8 +150,13 @@ func readInventoryFile(filename string) (*config.Inventory, error) {
 	return &inventory, nil
 }
 
-// ConvertInventoryToDeviceList is used for testing purposes
-func ConvertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
+// TestConvertInventoryToDeviceList converts the devices in an inventory to a list of maps with "hostname" and "ip-address" keys.
+// It takes in an `inventory` of type `*config.Inventory` and returns a slice of `map[string]string`.
+// Each map in the slice represents a device in the inventory, with "hostname" as the key and the device's hostname as the value,
+// and "ip-address" as the key and the device's IP address as the value.
+// The function iterates over the devices in the inventory and appends a map for each device to the `deviceList` slice.
+// Finally, it returns the `deviceList` slice.
+func TestConvertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
 	var deviceList []map[string]string
 	for _, device := range inventory.Inventory {
 		deviceList = append(deviceList, map[string]string{
