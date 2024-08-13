@@ -19,13 +19,13 @@ import (
 // and reports the results for each device.
 func main() {
 	// Parse command-line flags
-	cfg := config.ParseFlags()
+	flags, _ := config.ParseFlags()
 
 	// Initialize logger
-	l := logger.New(cfg.DebugLevel, cfg.Verbose)
+	l := logger.New(flags.DebugLevel, flags.Verbose)
 
 	// Load configuration
-	conf, err := config.Load(cfg.ConfigFile, cfg.SecretsFile)
+	conf, err := config.Load(flags.ConfigFile, flags.SecretsFile, flags)
 	if err != nil {
 		l.Fatalf("Failed to load configuration: %v", err)
 	}
@@ -34,7 +34,7 @@ func main() {
 	dm := devices.NewDeviceManager(conf, l)
 
 	// Get device list
-	deviceList, err := dm.GetDeviceList(cfg.NoPanorama, cfg.HostnameFilter)
+	deviceList, err := dm.GetDeviceList(flags.NoPanorama)
 	if err != nil {
 		l.Fatalf("Failed to get device list: %v", err)
 	}
@@ -66,7 +66,7 @@ func main() {
 	}
 
 	// Print unaffectedDevices device list
-	utils.PrintDeviceList(unaffectedDevices, l, cfg.Verbose)
+	utils.PrintDeviceList(unaffectedDevices, l, flags.Verbose)
 
 	// Print message before starting firewall connections
 	utils.PrintStartingFirewallConnections(l)
