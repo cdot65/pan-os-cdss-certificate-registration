@@ -10,17 +10,10 @@ import (
 
 	"github.com/PaloAltoNetworks/pango"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
-	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
 )
 
-// NGFWManager handles NGFW-specific operations
-type NGFWManager struct {
-	config *config.Config
-	logger *logger.Logger
-}
-
-// defaultPanosClientFactory creates a real PAN-OS client
-func defaultPanosClientFactory(hostname, username, password string) PanosClient {
+// defaultNgfwClientFactory creates a real PAN-OS client for NGFW
+func defaultNgfwClientFactory(hostname, username, password string) PanosClient {
 	return &pango.Firewall{
 		Client: pango.Client{
 			Hostname: hostname,
@@ -31,11 +24,16 @@ func defaultPanosClientFactory(hostname, username, password string) PanosClient 
 	}
 }
 
-func (dm *DeviceManager) getDevicesFromInventory(inventory *config.Inventory) ([]map[string]string, error) {
+func (dm *DeviceManager) getDevicesFromInventory() ([]map[string]string, error) {
+	inventory, err := readInventoryFile("inventory.yaml")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read inventory file: %w", err)
+	}
+
 	var deviceList []map[string]string
 	var mu sync.Mutex
 	var wg sync.WaitGroup
-	errChan := make(chan error, len(inventory.Inventory))
+	errorList := make([]string, 0)
 
 	for _, device := range inventory.Inventory {
 		wg.Add(1)
@@ -50,15 +48,21 @@ func (dm *DeviceManager) getDevicesFromInventory(inventory *config.Inventory) ([
 
 			dm.logger.Info("Initializing NGFW client for", device.Hostname)
 			if err := ngfwClient.Initialize(); err != nil {
-				dm.logger.Debug(fmt.Sprintf("Failed to initialize NGFW client for %s: %v", device.Hostname, err))
-				errChan <- err
+				errorMsg := fmt.Sprintf("Failed to initialize NGFW client for %s: %v", device.Hostname, err)
+				dm.logger.Debug(errorMsg)
+				mu.Lock()
+				errorList = append(errorList, errorMsg)
+				mu.Unlock()
 				return
 			}
 
-			deviceInfo, err := dm.getDeviceInfo(ngfwClient, device.Hostname)
+			deviceInfo, err := dm.getNgfwDeviceInfo(ngfwClient, device.Hostname)
 			if err != nil {
-				dm.logger.Debug(fmt.Sprintf("Failed to get device info for %s: %v", device.Hostname, err))
-				errChan <- err
+				errorMsg := fmt.Sprintf("Failed to get device info for %s: %v", device.Hostname, err)
+				dm.logger.Debug(errorMsg)
+				mu.Lock()
+				errorList = append(errorList, errorMsg)
+				mu.Unlock()
 				return
 			}
 
@@ -69,86 +73,21 @@ func (dm *DeviceManager) getDevicesFromInventory(inventory *config.Inventory) ([
 	}
 
 	wg.Wait()
-	close(errChan)
 
-	if len(errChan) > 0 {
-		return deviceList, <-errChan // Return partial results with the first error
+	// Print errors if any
+	if len(errorList) > 0 {
+		fmt.Println("Errors occurred while processing devices:")
+		for _, errMsg := range errorList {
+			fmt.Println(errMsg)
+		}
+		fmt.Println() // Add a blank line for better readability
 	}
 
 	return deviceList, nil
 }
 
-// GetDeviceList retrieves device information from NGFWs concurrently
-func (nm *NGFWManager) GetDeviceList(inventory *config.Inventory) ([]config.DeviceEntry, error) {
-	var wg sync.WaitGroup
-	deviceChan := make(chan config.DeviceEntry, len(inventory.Inventory))
-	errorChan := make(chan error, len(inventory.Inventory))
-
-	for _, device := range inventory.Inventory {
-		wg.Add(1)
-		go func(dev config.InventoryDevice) {
-			defer wg.Done()
-			deviceInfo, err := nm.getDeviceInfo(dev)
-			if err != nil {
-				errorChan <- err
-				return
-			}
-			deviceChan <- deviceInfo
-		}(device)
-	}
-
-	go func() {
-		wg.Wait()
-		close(deviceChan)
-		close(errorChan)
-	}()
-
-	var devices []config.DeviceEntry
-	for device := range deviceChan {
-		devices = append(devices, device)
-	}
-
-	if len(errorChan) > 0 {
-		return nil, <-errorChan
-	}
-
-	return devices, nil
-}
-
-func (nm *NGFWManager) getDeviceInfo(device config.InventoryDevice) (config.DeviceEntry, error) {
-	fw := &pango.Firewall{Client: pango.Client{
-		Hostname: device.IPAddress,
-		Username: nm.config.Auth.Auth.Firewall.Username,
-		Password: nm.config.Auth.Auth.Firewall.Password,
-		Logging:  pango.LogQuiet,
-	}}
-
-	if err := fw.Initialize(); err != nil {
-		return config.DeviceEntry{}, fmt.Errorf("failed to initialize firewall connection: %v", err)
-	}
-
-	cmd := "<show><system><info/></system></show>"
-	resp, err := fw.Op(cmd, "", nil, nil)
-	if err != nil {
-		return config.DeviceEntry{}, fmt.Errorf("failed to get system info: %v", err)
-	}
-
-	var systemInfo struct {
-		XMLName xml.Name `xml:"response"`
-		Status  string   `xml:"status,attr"`
-		Result  struct {
-			System config.DeviceEntry `xml:"system"`
-		} `xml:"result"`
-	}
-
-	if err := xml.Unmarshal(resp, &systemInfo); err != nil {
-		return config.DeviceEntry{}, fmt.Errorf("failed to unmarshal response: %v", err)
-	}
-
-	return systemInfo.Result.System, nil
-}
-
-func (dm *DeviceManager) getDeviceInfo(client PanosClient, hostname string) (map[string]string, error) {
+// getNgfwDeviceInfo retrieves device information from a single NGFW
+func (dm *DeviceManager) getNgfwDeviceInfo(client PanosClient, hostname string) (map[string]string, error) {
 	cmd := "<show><system><info/></system></show>"
 	response, err := client.Op(cmd, "", nil, nil)
 	if err != nil {
@@ -187,8 +126,6 @@ func (dm *DeviceManager) getDeviceInfo(client PanosClient, hostname string) (map
 }
 
 // readInventoryFile reads and parses an inventory file in YAML format.
-// This function reads the contents of a file specified by the filename,
-// and unmarshals the YAML data into a config.Inventory struct.
 func readInventoryFile(filename string) (*config.Inventory, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -202,4 +139,16 @@ func readInventoryFile(filename string) (*config.Inventory, error) {
 	}
 
 	return &inventory, nil
+}
+
+// ConvertInventoryToDeviceList is used for testing purposes
+func ConvertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
+	var deviceList []map[string]string
+	for _, device := range inventory.Inventory {
+		deviceList = append(deviceList, map[string]string{
+			"hostname":   device.Hostname,
+			"ip-address": device.IPAddress,
+		})
+	}
+	return deviceList
 }
