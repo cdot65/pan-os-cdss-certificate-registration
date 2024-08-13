@@ -39,6 +39,11 @@ func main() {
 		l.Fatalf("Failed to get device list: %v", err)
 	}
 
+	// Check if we got any devices
+	if len(deviceList) == 0 {
+		l.Fatalf("No devices were successfully processed")
+	}
+
 	// Parse versions and update deviceList
 	for i, device := range deviceList {
 		swVersion := device["sw-version"]
