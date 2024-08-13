@@ -54,7 +54,7 @@ func defaultPanosClientFactory(hostname, username, password string) PanosClient 
 }
 
 // defaultPanoramaClientFactory creates a real Panorama client
-func defaultPanoramaClientFactory(hostname, username, password string) PanosClient {
+var defaultPanoramaClientFactory = func(hostname, username, password string) PanosClient {
 	return &pango.Panorama{
 		Client: pango.Client{
 			Hostname: hostname,
