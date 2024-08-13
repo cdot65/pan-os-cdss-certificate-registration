@@ -11,6 +11,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func createTestFlags() *Flags {
+	return &Flags{
+		DebugLevel:     0,
+		Concurrency:    runtime.NumCPU(),
+		ConfigFile:     "panorama.yaml",
+		SecretsFile:    ".secrets.yaml",
+		HostnameFilter: "",
+		Verbose:        false,
+		NoPanorama:     false,
+	}
+}
+
 func TestSetupFlags(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -72,6 +84,7 @@ func TestLoad(t *testing.T) {
 		name           string
 		configContent  string
 		secretsContent string
+		flags          *Flags
 		expectedConfig *Config
 		expectError    bool
 	}{
@@ -90,14 +103,15 @@ auth:
     username: firewall-user
     password: firewall-pass
 `,
+			flags: createTestFlags(),
 			expectedConfig: &Config{
 				Panorama: []struct {
 					Hostname string `yaml:"hostname"`
-				}([]struct{ Hostname string }{
+				}{
 					{Hostname: "test-panorama.example.com"},
-				}),
+				},
 				Auth: AuthConfig{
-					Auth: struct {
+					Credentials: struct {
 						Panorama struct {
 							Username string `yaml:"username"`
 							Password string `yaml:"password"`
@@ -123,6 +137,7 @@ auth:
 						},
 					},
 				},
+				HostnameFilter: "",
 			},
 			expectError: false,
 		},
@@ -145,12 +160,18 @@ auth:
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			configFile := createTempFile(t, "config", tt.configContent)
-			defer os.Remove(configFile.Name())
+			defer func() {
+				err := os.Remove(configFile.Name())
+				assert.NoError(t, err)
+			}()
 
 			secretsFile := createTempFile(t, "secrets", tt.secretsContent)
-			defer os.Remove(secretsFile.Name())
+			defer func() {
+				err := os.Remove(secretsFile.Name())
+				assert.NoError(t, err)
+			}()
 
-			config, err := Load(configFile.Name(), secretsFile.Name())
+			config, err := Load(configFile.Name(), secretsFile.Name(), tt.flags)
 
 			if tt.expectError {
 				assert.Error(t, err)
@@ -163,7 +184,8 @@ auth:
 }
 
 func TestLoadError(t *testing.T) {
-	_, err := Load("non-existent-config.yaml", "non-existent-secrets.yaml")
+	flags := createTestFlags()
+	_, err := Load("non-existent-config.yaml", "non-existent-secrets.yaml", flags)
 	assert.Error(t, err)
 }
 
@@ -202,7 +224,10 @@ key2:
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tmpFile := createTempFile(t, "test", tt.content)
-			defer os.Remove(tmpFile.Name())
+			defer func() {
+				err := os.Remove(tmpFile.Name())
+				assert.NoError(t, err)
+			}()
 
 			var result map[string]interface{}
 			err := readYAMLFile(tmpFile.Name(), &result)

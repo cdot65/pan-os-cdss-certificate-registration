@@ -34,11 +34,16 @@ func setupFlags(fs *flag.FlagSet, cfg *Flags) {
 }
 
 // ParseFlags parses command-line flags and returns a configuration object.
-func ParseFlags() *Flags {
+func ParseFlags() (*Flags, *Config) {
 	cfg := &Flags{}
 	setupFlags(flag.CommandLine, cfg)
 	flag.Parse()
-	return cfg
+
+	config := &Config{
+		HostnameFilter: cfg.HostnameFilter,
+	}
+
+	return cfg, config
 }
 
 // Panorama represents the configuration details for Panorama.
@@ -46,17 +51,17 @@ type Panorama struct {
 	Hostname string `yaml:"hostname"`
 }
 
-// Config represents the overall configuration containing Panorama details.
 type Config struct {
 	Panorama []struct {
 		Hostname string `yaml:"hostname"`
 	} `yaml:"panorama"`
-	Auth AuthConfig
+	Auth           AuthConfig
+	HostnameFilter string
 }
 
 // AuthConfig represents the authentication configuration.
 type AuthConfig struct {
-	Auth struct {
+	Credentials struct {
 		Panorama struct {
 			Username string `yaml:"username"`
 			Password string `yaml:"password"`
@@ -97,16 +102,19 @@ type DevicesResponse struct {
 
 // Inventory represents the structure of the inventory.yaml file
 type Inventory struct {
-	Inventory []struct {
-		Hostname  string `yaml:"hostname"`
-		IPAddress string `yaml:"ip_address"`
-	} `yaml:"inventory"`
+	Inventory []InventoryDevice `yaml:"inventory"`
+}
+
+// InventoryDevice represents a single device in the inventory
+type InventoryDevice struct {
+	Hostname  string `yaml:"hostname"`
+	IPAddress string `yaml:"ip_address"`
 }
 
 // Load reads configuration and secrets from YAML files and returns a Config struct.
 // This function reads configuration data from a specified config file and secrets
 // from a secrets file, combining them into a single Config struct.
-func Load(configFile, secretsFile string) (*Config, error) {
+func Load(configFile, secretsFile string, flags *Flags) (*Config, error) {
 	var config Config
 	if err := readYAMLFile(configFile, &config); err != nil {
 		return nil, fmt.Errorf("failed to read Panorama config: %w", err)
@@ -114,6 +122,10 @@ func Load(configFile, secretsFile string) (*Config, error) {
 	if err := readYAMLFile(secretsFile, &config.Auth); err != nil {
 		return nil, fmt.Errorf("failed to read secrets: %w", err)
 	}
+
+	// Merge flags into the config
+	config.HostnameFilter = flags.HostnameFilter
+
 	return &config, nil
 }
 

@@ -85,7 +85,7 @@ func TestMainLogic(t *testing.T) {
 	// Setup test data
 	testConf := &config.Config{
 		Auth: config.AuthConfig{
-			Auth: struct {
+			Credentials: struct {
 				Panorama struct {
 					Username string `yaml:"username"`
 					Password string `yaml:"password"`
@@ -152,13 +152,14 @@ func TestMainLogic(t *testing.T) {
 	var buf bytes.Buffer
 
 	// Run the main logic (without actually calling main())
-	cfg := config.ParseFlags()
-	l := logger.New(cfg.DebugLevel, cfg.Verbose)
+	flags, cfg := config.ParseFlags()
+	l := logger.New(flags.DebugLevel, flags.Verbose)
 
-	conf, err := mockConfig.Load(cfg.ConfigFile, cfg.SecretsFile)
+	// Use cfg instead of conf for the initial configuration
+	conf, err := mockConfig.Load(flags.ConfigFile, flags.SecretsFile)
 	assert.NoError(t, err)
 
-	deviceList, err := mockDevices.GetDeviceList(conf, cfg.NoPanorama, cfg.HostnameFilter, l)
+	deviceList, err := mockDevices.GetDeviceList(conf, flags.NoPanorama, cfg.HostnameFilter, l)
 	assert.NoError(t, err)
 
 	for i, device := range deviceList {
@@ -184,7 +185,7 @@ func TestMainLogic(t *testing.T) {
 	utils.PrintDeviceList(filteredDevices, l, mockCfg.Verbose)
 
 	for _, device := range filteredDevices {
-		err := mockWildfire.RegisterWildFire(device, conf.Auth.Auth.Firewall.Username, conf.Auth.Auth.Firewall.Password, l)
+		err := mockWildfire.RegisterWildFire(device, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)
 		assert.NoError(t, err)
 		_, err = fmt.Fprintf(w, "%s: Successfully registered WildFire\n", device["hostname"])
 		assert.NoError(t, err)

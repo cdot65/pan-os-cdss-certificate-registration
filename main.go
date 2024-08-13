@@ -19,13 +19,13 @@ import (
 // and reports the results for each device.
 func main() {
 	// Parse command-line flags
-	cfg := config.ParseFlags()
+	flags, _ := config.ParseFlags()
 
 	// Initialize logger
-	l := logger.New(cfg.DebugLevel, cfg.Verbose)
+	l := logger.New(flags.DebugLevel, flags.Verbose)
 
 	// Load configuration
-	conf, err := config.Load(cfg.ConfigFile, cfg.SecretsFile)
+	conf, err := config.Load(flags.ConfigFile, flags.SecretsFile, flags)
 	if err != nil {
 		l.Fatalf("Failed to load configuration: %v", err)
 	}
@@ -34,9 +34,14 @@ func main() {
 	dm := devices.NewDeviceManager(conf, l)
 
 	// Get device list
-	deviceList, err := dm.GetDeviceList(cfg.NoPanorama, cfg.HostnameFilter)
+	deviceList, err := dm.GetDeviceList(flags.NoPanorama)
 	if err != nil {
 		l.Fatalf("Failed to get device list: %v", err)
+	}
+
+	// Check if we got any devices
+	if len(deviceList) == 0 {
+		l.Fatalf("No devices were successfully processed")
 	}
 
 	// Parse versions and update deviceList
@@ -61,7 +66,7 @@ func main() {
 	}
 
 	// Print unaffectedDevices device list
-	utils.PrintDeviceList(unaffectedDevices, l, cfg.Verbose)
+	utils.PrintDeviceList(unaffectedDevices, l, flags.Verbose)
 
 	// Print message before starting firewall connections
 	utils.PrintStartingFirewallConnections(l)
@@ -74,7 +79,7 @@ func main() {
 		wg.Add(1)
 		go func(dev map[string]string, index int) {
 			defer wg.Done()
-			err := wildfire.RegisterWildFire(dev, conf.Auth.Auth.Firewall.Username, conf.Auth.Auth.Firewall.Password, l)
+			err := wildfire.RegisterWildFire(dev, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)
 			if err != nil {
 				results <- fmt.Sprintf("%s: Failed to register WildFire - %v", dev["hostname"], err)
 			} else {
