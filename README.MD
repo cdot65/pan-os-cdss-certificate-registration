@@ -128,7 +128,7 @@ You have two modes of executing this project:
 ## Required YAML Configuration Files
 
 1. You will find an example `panorama.yaml` file [here](panorama.yaml)
-2. You will find an example `.secrets.yaml` file [here](.secrets.yaml)
+2. You will find an example `.secrets.yaml` file [here](.secrets.example.yaml)
 3. (Optional) If you would rather declare the firewall inventory without connecting to a Panorama appliance, you will find an example `inventory.yaml` file [here](inventory.yaml):
 
 ## Available execution flags
