@@ -66,6 +66,7 @@ Available flags:
 - `-filter string`: Comma-separated list of hostname patterns to filter devices (only works when querying Panorama)
 - `-verbose`: Enable verbose logging
 - `-nopanorama`: Use inventory.yaml instead of querying Panorama
+- `-reportonly`: Generate the PDF report without performing the Wildfire registration command
 
 ## Run from Source
 
@@ -191,20 +192,88 @@ The script will display:
 2. WildFire registration results for each device
 3. A summary of successful and failed registrations
 
-### Screenshots
+## Screenshots
 
-Here are some screenshots showcasing the execution:
+Here are some screenshots showcasing the workflow:
 
-_initialize the project by building the binary_
-![Screenshot 1](screenshots/screenshot1.png)
+### Downloading the binary from the Releases page
 
-_execute by simply pointing to the path of the binary file generated_
-![Screenshot 2](screenshots/screenshot2.png)
+1. _Visit the Releases page on the repository_
+![Github Repo](docs/assets/images/gh_repo.png)
 
-![Screenshot 3](screenshots/screenshot3.png)
+2. _Download the binary appropriate for your host operating system_
+![Github Repo](docs/assets/images/gh_releases.png)
 
-_bypass Panorama and use a statically defined inventory.yaml file as source of inventory_
-![Screenshot 4](screenshots/screenshot4.png)
+3. _Create required YAML configuration files (examples in this repository)_
+
+   - [`.secrets.yaml`](.secrets.example.yaml) will host your username and password to authenticate
+   ![Github Repo](docs/assets/images/secrets_yaml.png)
+
+   - [`panorama.yaml`](panorama.yaml) will host your Panorama IP address or hostname if you're using Panorama
+   ![Github Repo](docs/assets/images/panorama_yaml.png)
+   
+   - [`inventory.yaml`](inventory.yaml) will host your firewall inventory if you're not using Panorama
+
+4. _Execute from the CLI_
+
+   - Change into the directory with your downloaded binary and your YAML configuration files
+   ![Github Repo](docs/assets/images/windows_files.png)
+
+   - Execute the binary
+   ![Github Repo](docs/assets/images/windows_execute.png)
+
+> If you're running macOS, you may find that your computer will block the binary's execution, even if you permit it. In this scenario, your best option is to [install Go](https://go.dev/doc/install) and build from source (instructions below).
+
+_macOS security may block your execution_
+![Github Repo](docs/assets/images/macos_security.png)
+
+### Building from source
+
+1. _Make sure you have Go installed and available from the CLI_
+![Go Version](docs/assets/images/go_version.png)
+
+2. _Clone the repository on your local machine (requires git to be installed!)_
+
+   - ![git version](docs/assets/images/git_version.png)
+   - ![clone repo](docs/assets/images/git_clone.png)
+
+3. _Change into the project's directory, update YAML configuration files._
+
+   - Update the `.secrets.yaml` file by renaming the `.secrets.example.yaml` and updating its contents
+   ![update_secrets](docs/assets/images/update_secrets_yaml.png)
+
+   - If you're using Panorama for the device inventory, update the `panorama.yaml` file contents
+   ![update panorama](docs/assets/images/update_panorama_yaml.png)
+
+   - If you're not using Panoram then update the `inventory.yaml` file contents
+   ![update_inventory](docs/assets/images/update_inventory_yaml.png)
+
+4. _Initialize the Go project_
+
+   - Initialize with `go mod init github.com/cdot65/pan-os-cdss-certificate-registration`
+   ![initialize_go_project](docs/assets/images/go_init.png)
+
+   - Download the dependencies with `go mod tidy`
+   ![go mod tidy](docs/assets/images/go_tidy.png)
+
+   - Build binary with `go build main.go`
+   ![build binary](docs/assets/images/go_build.png)
+
+5. _Execute_
+
+   - Execute without any flags with `./main`
+   ![Execute without flags](docs/assets/images/main_execute.png)
+
+   - Execute with any flags, example `./main -filter='dallas-fw1,dallas-fw2' -verbose`
+   ![Execute with flags](docs/assets/images/main_flags.png)
+
+6. _Review PDF_
+
+   - Validate the PDF was generated in the report folder
+   ![report_path](docs/assets/images/report_path.png)
+
+   - Open the PDF report
+   ![report](docs/assets/images/report.png)
 
 ## Error Handling
 
