@@ -5,7 +5,6 @@ import (
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/devices"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
-	"github.com/cdot65/pan-os-cdss-certificate-registration/pdfgenerate"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/utils"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/wildfire"
 	"log"
@@ -71,52 +70,61 @@ func main() {
 	// Print message before starting firewall connections
 	utils.PrintStartingFirewallConnections(l)
 
-	// Register WildFire for unaffectedDevices devices
-	results := make(chan string, len(unaffectedDevices))
-	var wg sync.WaitGroup
-
-	for i, device := range unaffectedDevices {
-		wg.Add(1)
-		go func(dev map[string]string, index int) {
-			defer wg.Done()
-			err := wildfire.RegisterWildFire(dev, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)
-			if err != nil {
-				results <- fmt.Sprintf("%s: Failed to register WildFire - %v", dev["hostname"], err)
-			} else {
-				results <- fmt.Sprintf("%s: Successfully registered WildFire", dev["hostname"])
-			}
-		}(device, i)
-	}
-
-	// Wait for all goroutines to finish
-	wg.Wait()
-
-	// Close the results channel
-	close(results)
-
-	// Process results and update unaffectedDevices
+	// Create an empty placeholder that will contain the result our Scrapli tasks
 	var processedResults []string
-	for result := range results {
-		processedResults = append(processedResults, result)
-		parts := strings.SplitN(result, ": ", 2)
-		if len(parts) == 2 {
-			hostname, resultText := parts[0], parts[1]
-			for i, device := range unaffectedDevices {
-				if device["hostname"] == hostname {
-					unaffectedDevices[i]["result"] = resultText
-					break
+
+	// If we are not running in reportonly mode, then construct channels and a WaitGroup to safely concurrently connect
+	if !flags.ReportOnly {
+		// Register WildFire for unaffectedDevices devices
+		results := make(chan string, len(unaffectedDevices))
+		var wg sync.WaitGroup
+
+		for i, device := range unaffectedDevices {
+			wg.Add(1)
+			go func(dev map[string]string, index int) {
+				defer wg.Done()
+				err := wildfire.RegisterWildFire(dev, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)
+				if err != nil {
+					results <- fmt.Sprintf("%s: Failed to register WildFire - %v", dev["hostname"], err)
+				} else {
+					results <- fmt.Sprintf("%s: Successfully registered WildFire", dev["hostname"])
+				}
+			}(device, i)
+		}
+
+		// Wait for all goroutines to finish
+		wg.Wait()
+
+		// Close the results channel
+		close(results)
+
+		// Process results and update unaffectedDevices
+		for result := range results {
+			processedResults = append(processedResults, result)
+			parts := strings.SplitN(result, ": ", 2)
+			if len(parts) == 2 {
+				hostname, resultText := parts[0], parts[1]
+				for i, device := range unaffectedDevices {
+					if device["hostname"] == hostname {
+						unaffectedDevices[i]["result"] = resultText
+						break
+					}
 				}
 			}
+		}
+	} else {
+		// Report-only mode: Set a message for unaffected devices
+		for i := range unaffectedDevices {
+			unaffectedDevices[i]["result"] = "Skipped WildFire registration (Report-only mode)"
 		}
 	}
 
 	// Generate PDF report with all information including WildFire registration results
-	err = pdfgenerate.GeneratePDFReport(deviceList, affectedDevices, unaffectedDevices, "device_report.pdf")
+	err = utils.GeneratePDFReport(deviceList, affectedDevices, unaffectedDevices, "device_report.pdf")
 	if err != nil {
 		log.Fatal("Error generating PDF report:", err)
 	}
 
 	// Print results
 	utils.PrintResults(processedResults, len(unaffectedDevices), l)
-
 }
