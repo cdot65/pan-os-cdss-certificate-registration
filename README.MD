@@ -11,7 +11,6 @@ This Go program automates the process of registering WildFire on Palo Alto Netwo
   - [Build binary from source](#building-from-source)
 - [Required YAML Configuration Files](#required-yaml-configuration-files)
 - [Available execution flags](#available-execution-flags)
-  - [Examples](#examples)
 - [PDF Report Generation](#pdf-report-generation)
 - [Output](#output)
 - [Error Handling](#error-handling)
@@ -128,34 +127,9 @@ You have two modes of executing this project:
 
 ## Required YAML Configuration Files
 
-1. Create a `panorama.yaml` file with your Panorama configuration:
-
-    ```yaml
-    panorama:
-      - hostname: your-panorama-hostname
-    ```
-
-2. Create a `.secrets.yaml` file with your authentication details:
-
-    ```yaml
-    auth:
-      panorama:
-        username: your-panorama-username
-        password: your-panorama-password
-      firewall:
-        username: your-firewall-username
-        password: your-firewall-password
-    ```
-
-3. (Optional) If you would rather declare the firewall inventory without connecting to a Panorama appliance, create an `inventory.yaml` file with your firewall details:
-
-    ```yaml
-    inventory:
-      - hostname: 'firewall-1'
-        ip_address: '192.168.1.1'
-      - hostname: 'firewall-2'
-        ip_address: '192.168.1.2'
-    ```
+1. You will find an example `panorama.yaml` file [here](panorama.yaml)
+2. You will find an example `.secrets.yaml` file [here](.secrets.yaml)
+3. (Optional) If you would rather declare the firewall inventory without connecting to a Panorama appliance, you will find an example `inventory.yaml` file [here](inventory.yaml):
 
 ## Available execution flags
 
@@ -167,21 +141,6 @@ You have two modes of executing this project:
 - `-verbose`: Enable verbose logging
 - `-nopanorama`: Use inventory.yaml instead of querying Panorama
 - `-reportonly`: Generate the PDF report without performing the Wildfire registration command
-
-
-### Examples:
-
-1. Using Panorama with filtering:
-   ```
-   ./main -verbose -filter="fw1,fw2" -concurrency=5
-   ```
-
-2. Using local inventory file instead of Panorama:
-   ```
-   ./main -verbose -nopanorama
-   ```
-
-   > Note: When using the `-nopanorama` flag, the script will load firewall information from `inventory.yaml` instead of querying Panorama. In this case, the `-filter` flag has no effect.
    
 ## PDF Report Generation
 
