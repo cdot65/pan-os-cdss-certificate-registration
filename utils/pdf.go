@@ -1,5 +1,5 @@
 // Package pdfgenerate/pdf.go
-package pdfgenerate
+package utils
 
 import (
 	"log"
