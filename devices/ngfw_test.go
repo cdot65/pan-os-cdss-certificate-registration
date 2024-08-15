@@ -105,6 +105,7 @@ func TestGetDevicesFromInventory(t *testing.T) {
 				<serial>12345</serial>
 				<ip-address>192.168.1.1</ip-address>
 				<model>PA-3260</model>
+				<family>3200</family>
 				<sw-version>10.1.0</sw-version>
 			</system>
 		</result>
@@ -121,6 +122,7 @@ func TestGetDevicesFromInventory(t *testing.T) {
 	assert.Equal(t, "12345", devices[0]["serial"])
 	assert.Equal(t, "192.168.1.1", devices[0]["ip-address"])
 	assert.Equal(t, "PA-3260", devices[0]["model"])
+	assert.Equal(t, "3200", devices[0]["family"])
 	assert.Equal(t, "10.1.0", devices[0]["sw-version"])
 
 	mockClient.AssertExpectations(t)
