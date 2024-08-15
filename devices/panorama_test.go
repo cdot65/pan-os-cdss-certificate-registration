@@ -63,7 +63,7 @@ func TestGetDevicesFromPanorama(t *testing.T) {
 	l := logger.New(0, false)
 	dm := NewDeviceManager(conf, l)
 
-	mockClient := new(MockPanosClient)
+	mockClient := new(MockPanoramaClient)
 	dm.panosClientFactory = func(hostname, username, password string) PanosClient {
 		return mockClient
 	}
