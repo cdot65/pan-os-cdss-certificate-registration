@@ -126,6 +126,7 @@ func (dm *DeviceManager) getNgfwDeviceInfo(client PanosClient, hostname string) 
 		"ip-address":       resp.Result.System.IPAddress,
 		"ipv6-address":     resp.Result.System.IPv6Address,
 		"model":            resp.Result.System.Model,
+		"family":           resp.Result.System.Family,
 		"sw-version":       resp.Result.System.SWVersion,
 		"app-version":      resp.Result.System.AppVersion,
 		"av-version":       resp.Result.System.AVVersion,
