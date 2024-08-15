@@ -4,6 +4,8 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/utils/consoleprint"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/utils/filters"
 	"io"
 	"os"
 	"strings"
@@ -11,7 +13,6 @@ import (
 
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
-	"github.com/cdot65/pan-os-cdss-certificate-registration/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -47,9 +48,9 @@ func (m *MockDevices) GetDeviceList(conf *config.Config, noPanorama bool, hostna
 	return args.Get(0).([]map[string]string), args.Error(1)
 }
 
-func (m *MockUtils) ParseVersion(version string) (*utils.Version, error) {
+func (m *MockUtils) ParseVersion(version string) (*filters.Version, error) {
 	args := m.Called(version)
-	return args.Get(0).(*utils.Version), args.Error(1)
+	return args.Get(0).(*filters.Version), args.Error(1)
 }
 
 func (m *MockUtils) FilterAffectedDevices(deviceList []map[string]string) ([]map[string]string, error) {
@@ -135,7 +136,7 @@ func TestMainLogic(t *testing.T) {
 
 	// Set up ParseVersion expectations
 	for _, device := range testDeviceList {
-		parsedVersion, _ := utils.ParseVersion(device["sw-version"])
+		parsedVersion, _ := filters.ParseVersion(device["sw-version"])
 		mockUtils.On("ParseVersion", device["sw-version"]).Return(parsedVersion, nil).Once()
 	}
 
@@ -182,7 +183,7 @@ func TestMainLogic(t *testing.T) {
 	os.Stdout = w
 
 	// Update the PrintDeviceList call
-	utils.PrintDeviceList(filteredDevices, l, mockCfg.Verbose)
+	consoleprint.PrintDeviceList(filteredDevices, l, mockCfg.Verbose)
 
 	for _, device := range filteredDevices {
 		err := mockWildfire.RegisterWildFire(device, conf.Auth.Credentials.Firewall.Username, conf.Auth.Credentials.Firewall.Password, l)

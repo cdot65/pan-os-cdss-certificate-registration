@@ -1,3 +1,4 @@
+// Package main.go
 package main
 
 import (
@@ -5,7 +6,9 @@ import (
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/devices"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
-	"github.com/cdot65/pan-os-cdss-certificate-registration/utils"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/utils/consoleprint"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/utils/filters"
+	"github.com/cdot65/pan-os-cdss-certificate-registration/utils/pdf"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/wildfire"
 	"log"
 	"strings"
@@ -43,43 +46,47 @@ func main() {
 		l.Fatalf("No devices were successfully processed")
 	}
 
-	// Parse versions and update deviceList
-	for i, device := range deviceList {
+	// Filter devices by hardware family
+	eligibleHardware, ineligibleHardware := filters.FilterDevicesByFamily(deviceList)
+
+	// Parse versions and update eligibleHardware
+	for i, device := range eligibleHardware {
 		swVersion := device["sw-version"]
-		parsedVersion, err := utils.ParseVersion(swVersion)
+		parsedVersion, err := filters.ParseVersion(swVersion)
 		if err != nil {
 			l.Fatalf("Failed to parse version for device %s: %v", device["hostname"], err)
 		}
 
 		// Add parsed version components to the device map
-		deviceList[i]["parsed_version_major"] = fmt.Sprintf("%d", parsedVersion.Major)
-		deviceList[i]["parsed_version_feature"] = fmt.Sprintf("%d", parsedVersion.Feature)
-		deviceList[i]["parsed_version_maintenance"] = fmt.Sprintf("%d", parsedVersion.Maintenance)
-		deviceList[i]["parsed_version_hotfix"] = fmt.Sprintf("%d", parsedVersion.Hotfix)
+		eligibleHardware[i]["parsed_version_major"] = fmt.Sprintf("%d", parsedVersion.Major)
+		eligibleHardware[i]["parsed_version_feature"] = fmt.Sprintf("%d", parsedVersion.Feature)
+		eligibleHardware[i]["parsed_version_maintenance"] = fmt.Sprintf("%d", parsedVersion.Maintenance)
+		eligibleHardware[i]["parsed_version_hotfix"] = fmt.Sprintf("%d", parsedVersion.Hotfix)
 	}
 
-	// Split devices into affected and unaffected
-	affectedDevices, unaffectedDevices, err := utils.SplitDevices(deviceList)
+	// Split eligible hardware devices into supported and unsupported versions
+	supportedVersions, unsupportedVersions, err := filters.SplitDevicesByVersion(eligibleHardware)
 	if err != nil {
-		l.Fatalf("Failed to split devices: %v", err)
+		l.Fatalf("Failed to split devices by version: %v", err)
 	}
 
-	// Print unaffectedDevices device list
-	utils.PrintDeviceList(unaffectedDevices, l, flags.Verbose)
+	// The registrationCandidates are the devices with supported versions
+	registrationCandidates := supportedVersions
+
+	// Print registration candidates list
+	consoleprint.PrintDeviceList(registrationCandidates, l, flags.Verbose)
 
 	// Print message before starting firewall connections
-	utils.PrintStartingFirewallConnections(l)
+	consoleprint.PrintStartingFirewallConnections(l)
 
-	// Create an empty placeholder that will contain the result our Scrapli tasks
 	var processedResults []string
 
-	// If we are not running in reportonly mode, then construct channels and a WaitGroup to safely concurrently connect
 	if !flags.ReportOnly {
-		// Register WildFire for unaffectedDevices devices
-		results := make(chan string, len(unaffectedDevices))
+		// Register WildFire for registration candidates
+		results := make(chan string, len(registrationCandidates))
 		var wg sync.WaitGroup
 
-		for i, device := range unaffectedDevices {
+		for i, device := range registrationCandidates {
 			wg.Add(1)
 			go func(dev map[string]string, index int) {
 				defer wg.Done()
@@ -94,37 +101,35 @@ func main() {
 
 		// Wait for all goroutines to finish
 		wg.Wait()
-
-		// Close the results channel
 		close(results)
 
-		// Process results and update unaffectedDevices
+		// Process results and update registrationCandidates
 		for result := range results {
 			processedResults = append(processedResults, result)
 			parts := strings.SplitN(result, ": ", 2)
 			if len(parts) == 2 {
 				hostname, resultText := parts[0], parts[1]
-				for i, device := range unaffectedDevices {
+				for i, device := range registrationCandidates {
 					if device["hostname"] == hostname {
-						unaffectedDevices[i]["result"] = resultText
+						registrationCandidates[i]["result"] = resultText
 						break
 					}
 				}
 			}
 		}
 	} else {
-		// Report-only mode: Set a message for unaffected devices
-		for i := range unaffectedDevices {
-			unaffectedDevices[i]["result"] = "Skipped WildFire registration (Report-only mode)"
+		// Report-only mode: Set a message for registration candidates
+		for i := range registrationCandidates {
+			registrationCandidates[i]["result"] = "Skipped WildFire registration (Report-only mode)"
 		}
 	}
 
-	// Generate PDF report with all information including WildFire registration results
-	err = utils.GeneratePDFReport(deviceList, affectedDevices, unaffectedDevices, "device_report.pdf")
+	// Generate PDF report
+	err = pdf.GeneratePDFReport(deviceList, ineligibleHardware, unsupportedVersions, registrationCandidates, "device_report.pdf")
 	if err != nil {
 		log.Fatal("Error generating PDF report:", err)
 	}
 
 	// Print results
-	utils.PrintResults(processedResults, len(unaffectedDevices), l)
+	consoleprint.PrintResults(processedResults, len(registrationCandidates), l)
 }

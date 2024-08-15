@@ -126,6 +126,7 @@ func (dm *DeviceManager) getNgfwDeviceInfo(client PanosClient, hostname string) 
 		"ip-address":       resp.Result.System.IPAddress,
 		"ipv6-address":     resp.Result.System.IPv6Address,
 		"model":            resp.Result.System.Model,
+		"family":           resp.Result.System.Family,
 		"sw-version":       resp.Result.System.SWVersion,
 		"app-version":      resp.Result.System.AppVersion,
 		"av-version":       resp.Result.System.AVVersion,
@@ -148,21 +149,4 @@ func readInventoryFile(filename string) (*config.Inventory, error) {
 	}
 
 	return &inventory, nil
-}
-
-// ConvertInventoryToDeviceList converts the devices in an inventory to a list of maps with "hostname" and "ip-address" keys.
-// It takes in an `inventory` of type `*config.Inventory` and returns a slice of `map[string]string`.
-// Each map in the slice represents a device in the inventory, with "hostname" as the key and the device's hostname as the value,
-// and "ip-address" as the key and the device's IP address as the value.
-// The function iterates over the devices in the inventory and appends a map for each device to the `deviceList` slice.
-// Finally, it returns the `deviceList` slice.
-func ConvertInventoryToDeviceList(inventory *config.Inventory) []map[string]string {
-	var deviceList []map[string]string
-	for _, device := range inventory.Inventory {
-		deviceList = append(deviceList, map[string]string{
-			"hostname":   device.Hostname,
-			"ip-address": device.IPAddress,
-		})
-	}
-	return deviceList
 }

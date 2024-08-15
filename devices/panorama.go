@@ -71,6 +71,7 @@ func (dm *DeviceManager) getDevicesFromPanorama() ([]map[string]string, error) {
 			"ip-address":       entry.IPAddress,
 			"ipv6-address":     entry.IPv6Address,
 			"model":            entry.Model,
+			"family":           entry.Family,
 			"sw-version":       entry.SWVersion,
 			"app-version":      entry.AppVersion,
 			"av-version":       entry.AVVersion,

@@ -1,4 +1,5 @@
-package utils
+// Package filters utils/filters/version.go
+package filters
 
 import (
 	"fmt"
@@ -116,7 +117,7 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, st
 	return false, "", nil
 }
 
-func SplitDevices(deviceList []map[string]string) (affected []map[string]string, unaffected []map[string]string, err error) {
+func SplitDevicesByVersion(deviceList []map[string]string) (affected []map[string]string, unaffected []map[string]string, err error) {
 	for _, device := range deviceList {
 		isAffected, minUpdateRelease, err := IsAffectedVersion(device, false) // Assuming no Global Protect for now
 		if err != nil {

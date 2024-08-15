@@ -63,7 +63,7 @@ func TestGetDevicesFromPanorama(t *testing.T) {
 	l := logger.New(0, false)
 	dm := NewDeviceManager(conf, l)
 
-	mockClient := new(MockPanosClient)
+	mockClient := new(MockPanoramaClient)
 	dm.panosClientFactory = func(hostname, username, password string) PanosClient {
 		return mockClient
 	}
@@ -73,19 +73,20 @@ func TestGetDevicesFromPanorama(t *testing.T) {
 
 	// Mock the Op method
 	mockResponse := `
-    <response status="success">
-        <result>
-            <devices>
-                <entry>
-                    <hostname>test-fw</hostname>
-                    <serial>12345</serial>
-                    <ip-address>192.168.1.1</ip-address>
-                    <model>PA-3260</model>
-                    <sw-version>10.1.0</sw-version>
-                </entry>
-            </devices>
-        </result>
-    </response>`
+	<response status="success">
+		<result>
+			<devices>
+				<entry>
+					<hostname>test-fw</hostname>
+					<serial>12345</serial>
+					<ip-address>192.168.1.1</ip-address>
+					<model>PA-3260</model>
+					<family>3200</family>
+					<sw-version>10.1.0</sw-version>
+				</entry>
+			</devices>
+		</result>
+	</response>`
 	mockClient.On("Op", "<show><devices><connected/></devices></show>", "", nil, nil).Return([]byte(mockResponse), nil)
 
 	// Test
@@ -98,6 +99,7 @@ func TestGetDevicesFromPanorama(t *testing.T) {
 	assert.Equal(t, "12345", devices[0]["serial"])
 	assert.Equal(t, "192.168.1.1", devices[0]["ip-address"])
 	assert.Equal(t, "PA-3260", devices[0]["model"])
+	assert.Equal(t, "3200", devices[0]["family"])
 	assert.Equal(t, "10.1.0", devices[0]["sw-version"])
 
 	mockClient.AssertExpectations(t)

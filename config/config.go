@@ -45,6 +45,7 @@ type DeviceEntry struct {
 	IPAddress       string `xml:"ip-address"`
 	IPv6Address     string `xml:"ipv6-address"`
 	Model           string `xml:"model"`
+	Family          string `xml:"family"`
 	SWVersion       string `xml:"sw-version"`
 	AppVersion      string `xml:"app-version"`
 	AVVersion       string `xml:"av-version"`
