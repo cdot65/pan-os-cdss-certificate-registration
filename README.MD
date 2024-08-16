@@ -143,9 +143,13 @@ You have two modes of executing this project:
 
 The program generates a PDF report containing detailed information about all devices, including their status and WildFire registration results. This report is saved as `device_report.pdf` in the current directory.
 
-![report](docs/assets/images/report.png)
+![report](docs/assets/images/report1.png)
+![report](docs/assets/images/report2.png)
 
-You can view an example of the generated PDF report [here](docs/assets/pdf/device_report.pdf).
+You can view an example of the generated PDF report
+
+[page1](docs/assets/pdf/device_report-1.pdf).
+[page1](docs/assets/pdf/device_report-2.pdf).
 
 ## Output
 
