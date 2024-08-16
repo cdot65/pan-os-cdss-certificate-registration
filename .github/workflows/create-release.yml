@@ -21,26 +21,40 @@ jobs:
             goarch: arm64
 
     steps:
+      # Check out the repository code
       - name: Check out code
         uses: actions/checkout@v4.1.7
 
+      # Set up Go environment
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
           go-version: '1.21.x'
 
-      # Initialize Go Module
-      - name: Initialize Go Module
-        run: go mod init github.com/cdot65/pan-os-cdss-certificate-registration
+      # Cache Go modules to speed up builds
+      - name: Cache Go Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-      # Clear module cache
+      # Install dependencies
+      - name: Install Dependencies
+        run: go mod download
+
+      # Clear module cache (optional)
       - name: Clear module cache
         run: go clean -modcache
 
-      # Tidy up dependencies
+      # Ensure all dependencies are tidy
       - name: Tidy Go Module
         run: go mod tidy
 
+      # Build the binary for each OS/architecture
       - name: Build Binary
         env:
           GOOS: ${{ matrix.goos }}
@@ -51,6 +65,7 @@ jobs:
             mv pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }} pan-os-cdss-certificate-registration-${{ matrix.goos }}-${{ matrix.goarch }}.exe
           fi
 
+      # Upload the binary artifact for each OS/architecture
       - name: Upload Binary
         uses: actions/upload-artifact@v4
         with:
@@ -61,9 +76,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      # Download all artifacts from the build job
       - name: Download all artifacts
         uses: actions/download-artifact@v4
 
+      # Create a GitHub release with the uploaded artifacts
       - name: Create Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
