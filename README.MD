@@ -75,10 +75,10 @@ You have two modes of executing this project:
    - Execute the binary `./pan-os-cdss-certificate-registration-<os>-<arch> [flags]`
    ![Github Repo](docs/assets/images/windows_execute.png)
 
-   - > If you're running macOS, you may find that your computer will block the binary's execution, even if you permit it. In this scenario, your best option is to [install Go](https://go.dev/doc/install) and build from source (instructions below).
-
-   _macOS security may block your execution_
-   ![Github Repo](docs/assets/images/macos_security.png)
+   - If you're running macOS, you may find that your computer will block the binary's execution.You can update allow for this to execute by going into your System Preferences, Privacy & Security and allowing your computer to execute from trusted developers.
+   ![macos_security](docs/assets/images/macos_security.png)
+   ![macos_pref_security](docs/assets/images/macos_pref_security.png)
+   - Run the tool again from the CLI and select "Open" if you're prompted with another pop up alert.
 
 ### Building from source
 
