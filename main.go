@@ -124,6 +124,14 @@ func main() {
 		}
 	}
 
+	// Get device certificate status for all devices
+	consoleprint.PrintStartingDeviceCertificateVerification(l)
+
+	dm.GetDeviceCertificateStatus(deviceList)
+
+	// Print out errors for each device
+	consoleprint.PrintDeviceErrors(deviceList, l)
+
 	// Generate PDF report
 	err = pdf.GeneratePDFReport(deviceList, ineligibleHardware, unsupportedVersions, registrationCandidates, "device_report.pdf")
 	if err != nil {
