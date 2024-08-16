@@ -39,20 +39,21 @@ type AuthConfig struct {
 
 // DeviceEntry represents a single device entry from the Panorama response.
 type DeviceEntry struct {
-	Name            string   `xml:"name,attr"`
-	Serial          string   `xml:"serial"`
-	Hostname        string   `xml:"hostname"`
-	IPAddress       string   `xml:"ip-address"`
-	IPv6Address     string   `xml:"ipv6-address"`
-	Model           string   `xml:"model"`
-	Family          string   `xml:"family"`
-	SWVersion       string   `xml:"sw-version"`
-	AppVersion      string   `xml:"app-version"`
-	AVVersion       string   `xml:"av-version"`
-	WildfireVersion string   `xml:"wildfire-version"`
-	ThreatVersion   string   `xml:"threat-version"`
-	Result          string   `json:"result,omitempty"`
-	Errors          []string `json:"errors,omitempty"`
+	Name            string                  `xml:"name,attr"`
+	Serial          string                  `xml:"serial"`
+	Hostname        string                  `xml:"hostname"`
+	IPAddress       string                  `xml:"ip-address"`
+	IPv6Address     string                  `xml:"ipv6-address"`
+	Model           string                  `xml:"model"`
+	Family          string                  `xml:"family"`
+	SWVersion       string                  `xml:"sw-version"`
+	AppVersion      string                  `xml:"app-version"`
+	AVVersion       string                  `xml:"av-version"`
+	WildfireVersion string                  `xml:"wildfire-version"`
+	ThreatVersion   string                  `xml:"threat-version"`
+	Result          string                  `json:"result,omitempty"`
+	Errors          []string                `json:"errors,omitempty"`
+	DeviceCert      DeviceCertificateStatus `json:"deviceCert,omitempty"`
 }
 
 // DevicesResponse represents the structure of the XML response from Panorama.

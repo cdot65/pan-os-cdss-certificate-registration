@@ -2,6 +2,7 @@
 package devices
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
@@ -82,9 +83,9 @@ func (dm *DeviceManager) GetDeviceCertificateStatus(deviceList []map[string]stri
 			hostname := device["hostname"]
 			ipAddress := device["ip-address"]
 
-			// Initialize the errors string if it doesn't exist
+			// Initialize the errors slice if it doesn't exist
 			if _, ok := device["errors"]; !ok {
-				deviceList[index]["errors"] = ""
+				deviceList[index]["errors"] = "[]"
 			}
 
 			// Create a new pango client for each device
@@ -98,7 +99,7 @@ func (dm *DeviceManager) GetDeviceCertificateStatus(deviceList []map[string]stri
 			if err := client.Initialize(); err != nil {
 				errMsg := fmt.Sprintf("Failed to initialize client for %s: %v", hostname, err)
 				dm.logger.Error(errMsg)
-				deviceList[index]["errors"] += errMsg + "; "
+				deviceList[index]["errors"] = appendError(deviceList[index]["errors"], errMsg)
 				return
 			}
 
@@ -107,14 +108,12 @@ func (dm *DeviceManager) GetDeviceCertificateStatus(deviceList []map[string]stri
 			if err != nil {
 				errMsg := fmt.Sprintf("Failed to get device certificate status for %s: %v", hostname, err)
 				dm.logger.Error(errMsg)
-				deviceList[index]["errors"] += errMsg + "; "
+				deviceList[index]["errors"] = appendError(deviceList[index]["errors"], errMsg)
 				return
 			}
 
 			// Update the device entry with certificate status information
-			for key, value := range certStatus {
-				deviceList[index][key] = value
-			}
+			deviceList[index]["deviceCert"] = certStatusToJSON(certStatus)
 		}(i)
 	}
 
@@ -144,4 +143,27 @@ func (dm *DeviceManager) SetNgfwWorkflow() {
 // SetPanoramaWorkflow sets the PAN-OS client factory to create a real Panorama client.
 func (dm *DeviceManager) SetPanoramaWorkflow() {
 	dm.panosClientFactory = defaultPanoramaClientFactory
+}
+
+func certStatusToJSON(certStatus map[string]string) string {
+	jsonBytes, err := json.Marshal(certStatus)
+	if err != nil {
+		return "{}"
+	}
+	return string(jsonBytes)
+}
+
+func appendError(errorsJSON, newError string) string {
+	var errors []string
+	if err := json.Unmarshal([]byte(errorsJSON), &errors); err != nil {
+		// If we can't unmarshal, start with an empty slice
+		errors = []string{}
+	}
+	errors = append(errors, newError)
+	jsonBytes, err := json.Marshal(errors)
+	if err != nil {
+		// If we can't marshal, return a JSON array with just the new error
+		return fmt.Sprintf("[%q]", newError)
+	}
+	return string(jsonBytes)
 }
