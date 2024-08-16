@@ -1,0 +1,706 @@
+%PDF-1.4
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/Group <</Type /Group /S /Transparency /CS /DeviceRGB>>
+/Contents 4 0 R>>
+endobj
+4 0 obj
+<</Length 28886>>
+stream
+0 J
+0 j
+0.57 w
+0.000 G
+0.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 10.00 Tf ET
+q 45.35433 0 0 45.35433 72.99213 748.34646 cm /I350a7c7e07ce2bc40086857555e06c24c50cbdd6 Do Q
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+q 0.039 0.039 0.588 rg BT 438.90 777.20 Td (CDSS Services Registration With ) Tj ET Q
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+q 0.039 0.039 0.588 rg BT 469.57 769.20 Td (Device Certificate Report ) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT 220.62 722.17 Td (All PAN-OS NGFW Devices) Tj ET
+0.216 g
+28.35 714.33 538.58 -19.84 re f 
+1.000 g
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT 170.85 701.08 Td (List of all NGFW devices that will be considered for this job) Tj ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 28.35 686.49 Td (Hostname) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 118.11 686.49 Td (SW Version) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 207.87 686.49 Td (Model) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 297.64 686.49 Td (IP Address) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 432.28 686.49 Td (Serial) Tj ET Q
+0.871 g
+28.35 680.31 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 673.31 Td (dallas-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 673.31 Td (10.2.10) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 673.31 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 673.31 Td (192.168.255.17) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 673.31 Td (007054000254662) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 661.98 Td (magnolia-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 661.98 Td (11.1.3-h2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 661.98 Td (PA-440) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 661.98 Td (10.0.0.3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 661.98 Td (021201090922) Tj ET Q
+0.871 g
+28.35 657.64 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 650.64 Td (austin-fw3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 650.64 Td (10.2.0) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 650.64 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 650.64 Td (192.168.255.13) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 650.64 Td (007054000254143) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 639.30 Td (austin-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 639.30 Td (10.1.5-h3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 639.30 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 639.30 Td (192.168.255.11) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 639.30 Td (007054000254141) Tj ET Q
+0.871 g
+28.35 634.96 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 627.96 Td (magnolia-fw3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 627.96 Td (11.2.2-h1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 627.96 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 627.96 Td (192.168.255.4) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 627.96 Td (007954000489175) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 616.62 Td (katy-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 616.62 Td (10.1.3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 616.62 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 616.62 Td (192.168.255.41) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 616.62 Td (007054000242051) Tj ET Q
+0.871 g
+28.35 612.28 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 605.28 Td (houston-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 605.28 Td (10.2.9-h1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 605.28 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 605.28 Td (192.168.255.14) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 605.28 Td (007054000254145) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 593.94 Td (austin-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 593.94 Td (10.1.5-h3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 593.94 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 593.94 Td (192.168.255.12) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 593.94 Td (007054000254142) Tj ET Q
+0.871 g
+28.35 589.61 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 582.61 Td (katy-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 582.61 Td (10.1.3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 582.61 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 582.61 Td (192.168.255.42) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 582.61 Td (007054000243915) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 571.27 Td (dallas-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 571.27 Td (10.2.10) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 571.27 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 571.27 Td (192.168.255.16) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 571.27 Td (007054000254661) Tj ET Q
+0.871 g
+28.35 566.93 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 559.93 Td (houston-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 559.93 Td (10.2.9-h1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 559.93 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 559.93 Td (192.168.255.15) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 559.93 Td (007054000254144) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+q 0.000 g BT 211.61 506.74 Td (Skipped Because of Hardware) Tj ET Q
+0.216 g
+28.35 498.90 538.58 -19.84 re f 
+1.000 g
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT 102.32 485.65 Td (Devices with hardware platforms unaffected by services registration with Device Certificate) Tj ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 28.35 471.06 Td (Hostname) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 118.11 471.06 Td (Model) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 207.87 471.06 Td (Family) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 297.64 471.06 Td (IP Address) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 432.28 471.06 Td (Serial) Tj ET Q
+0.871 g
+28.35 464.88 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 457.88 Td (magnolia-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 457.88 Td (PA-440) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 457.88 Td (400) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 297.64 457.88 Td (10.0.0.3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 457.88 Td (021201090922) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+q 0.000 g BT 188.61 404.69 Td (Skipped Because of PAN-OS Versions) Tj ET Q
+0.216 g
+28.35 396.85 538.58 -19.84 re f 
+1.000 g
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT 86.08 383.60 Td (Devices that require a PAN-OS upgrade to support Device Certificate registration to CDSS services) Tj ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 28.35 369.01 Td (Hostname) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 118.11 369.01 Td (SW Version) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 207.87 369.01 Td (Minimum Upgrade Version) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 342.52 369.01 Td (Model) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 432.28 369.01 Td (IP Address) Tj ET Q
+0.871 g
+28.35 362.83 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 355.83 Td (austin-fw3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 355.83 Td (10.2.0) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 355.83 Td (10.2.0-h2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 342.52 355.83 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 355.83 Td (192.168.255.13) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 344.50 Td (austin-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 344.50 Td (10.1.5-h3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 344.50 Td (10.1.5-h4) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 342.52 344.50 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 344.50 Td (192.168.255.11) Tj ET Q
+0.871 g
+28.35 340.16 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 333.16 Td (katy-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 333.16 Td (10.1.3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 333.16 Td (10.1.3-h3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 342.52 333.16 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 333.16 Td (192.168.255.41) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 321.82 Td (austin-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 321.82 Td (10.1.5-h3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 321.82 Td (10.1.5-h4) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 342.52 321.82 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 321.82 Td (192.168.255.12) Tj ET Q
+0.871 g
+28.35 317.48 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 310.48 Td (katy-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 310.48 Td (10.1.3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 207.87 310.48 Td (10.1.3-h3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 342.52 310.48 Td (PA-VM) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 432.28 310.48 Td (192.168.255.42) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 12.00 Tf ET
+q 0.000 g BT 203.29 257.29 Td (WildFire Registration Candidates) Tj ET Q
+0.216 g
+28.35 249.45 538.58 -19.84 re f 
+1.000 g
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 9.00 Tf ET
+BT 163.59 236.20 Td (Devices eligible for WildFire registration with device certificate) Tj ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 28.35 221.61 Td (Hostname) Tj ET Q
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+BT /Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 8.00 Tf ET
+q 0.000 g BT 118.11 221.61 Td (Result) Tj ET Q
+0.871 g
+28.35 215.43 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 208.43 Td (dallas-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 208.43 Td (Successfully registered WildFire) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 197.09 Td (magnolia-fw3) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 197.09 Td (Successfully registered WildFire) Tj ET Q
+0.871 g
+28.35 192.76 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 185.76 Td (houston-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 185.76 Td (Successfully registered WildFire) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 174.42 Td (dallas-fw1) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 174.42 Td (Successfully registered WildFire) Tj ET Q
+0.871 g
+28.35 170.08 538.58 -11.34 re f 
+1.000 g
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 28.35 163.08 Td (houston-fw2) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 7.00 Tf ET
+q 0.000 g BT 118.11 163.08 Td (Successfully registered WildFire) Tj ET Q
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+BT /F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 8.00 Tf ET
+q 0.039 0.039 0.588 rg BT 28.35 68.54 Td (github.com/cdot65/pan-os-cdss-certificate-registration) Tj ET Q
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 10.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 10.00 Tf ET
+BT /F0a76705d18e0494dd24cb573e53aa0a8c710ec99 10.00 Tf ET
+q 0.000 g BT 287.91 46.70 Td (1 / 1) Tj ET Q
+
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R ]
+/Count 1
+/MediaBox [0 0 595.28 841.89]
+>>
+endobj
+5 0 obj
+<</Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+6 0 obj
+<</Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+7 0 obj
+<</Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+8 0 obj
+<</Type /XObject
+/Subtype /Image
+/Width 341
+/Height 341
+/ColorSpace /DeviceRGB
+/BitsPerComponent 8
+/Filter /FlateDecode
+/DecodeParms <</Predictor 15 /Colors 3 /BitsPerComponent 8 /Columns 341>>
+/SMask 9 0 R
+/Length 4049>>
+stream
+xÏ’¡ICAF·∞âÙìZÌ«&R¡à¢∆›‹¿˘æ]VC~Ó·ù÷ZêÙí¸◊¿'˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝Có˛°Kˇ–•Ë“?tÈ∫Ù]˙á.˝œ∏^Œ◊ÀyÊÌ'Û5Ö5Fú÷Z#ó›ﬁ˙Î€ª)æ≈◊ÿœ˜∑€¯è„˛g ›Ò5FË´üü=˙_ß»Æ1Eˇ˚¸uÒ¡£0EpçA˙ﬂ‰Ò≈ßé˛ﬂ)Rkå˙`Ôår§VÇ ®wÇwˇcpÓ≤ô°º„iwWWUfe|†’0Îu«D ⁄#≈7â~PEÈË˘øùÒ‚È£§ÇﬁF¥ˇΩ<-û8˙	ƒ6ä†˝odÆx ËßUP⁄®Éˆøãï‚…¢_TAf£⁄ˇ÷ãßâﬁEççjhˇ˛xOΩ£
+—˛ùÒ-:zw–6j¢˝{≤£x–Ë7© µQÌﬂç}≈√EøUúç hˇ>Ï.(˙ @6ä£˝;S<DÙa* l‘G˚_%≤¯‚—´(nÌâ¯‚ÀFü¢¢¨¥ˇy≤ä/}¢äÇ6Ä–˛'…-æTÙÈ*JŸ¿B˚ü°BÒE¢/¢¢à8¥ˇ«‘)>=˙R*“m ¢˝?£ZÒâ—TëhÌˇ5ãOâæ¨ä∏hˇ£T.>8˙‚*Çm@£˝Qø¯∞Ë!TÑŸ@G˚ˇJÒ—©∞AÄˆˇ¨‚∑Fßb´¥ˇ;ãﬂ=®äM6h–˛ﬂÇ[º{Ù–*‹m0°˝zÒé—®p¥AÜˆˇ≈ªDO£¬≈⁄øÖ©¯≈Ë…T,⁄†D˚ˇæ‚ß£ßT1mÉÌˇ/¨≈ODO¨b¬1⁄ˇ∏ã=ΩäG6∏—˛”°¯¡Ëõ®¥Aèˆﬂ®¯è—˜ˇA∑Û^ÈæˇÜº;Úª◊πÈyÍì÷˚o˚Ÿ_~}•ùœﬁwˇù?uÛÅÊ*åçV4›øä?£óäÉû˛˚˙˙:Œﬂáûü¥·ˇ?GﬁFCªÁø∆/ƒIØ˝k¸Ünèª{⁄h¥çﬂp‰~¸*zzË≤çﬂö˚Î◊=ik†≈˛5~√5˜Î+}Ë|v˛˝k¸Üwπø{ùõûß>!ﬂø∆o∏œ˝˛w˘Ëvﬁ+Ã˚◊¯#πèºáÉ>'ΩÅvˇøa<˜Òw‚“·å#pÓ_„7<Õ˝È˚±‡>›#˜ØÒÊrü˚Æ˙∞ûk∂˝k¸Üï‹Wæ∑&|'ZÑjˇøa=˜ı+‘ÅÈ,^Ï_„7xÂÓuù\8N·…˛5~ÉoÓæWã˝˛˜¡∞çﬂ∞#˜◊å˜ŒÄﬂø∆oÿó˚æ+ÔÒû#¡ﬁø∆oÿù˚ÓÎ˚Çu∑) Ô_„7ƒ‰ÛS÷Aπœ\Pˇ˝?çﬂú{qˇ¡6pÅ|˛è/û¯‹„‚8ïÔ≠x˚◊¯Yπg˝‹{jﬁUY¿˛¸ØÒ“s/ıâ‰⁄8U‰ﬁ∆#êûˇß_qêﬁY©O$◊∆´ä◊Øã≥ ß1‰Ê~˛˜AE»µqçÛ˙JE~±W6€ëÆ0Ã˚?ı]d„sÁtá€*@µúÈA!·üC˙äÕ6¥qw˘#ü¬˘ÈﬂQ0ˇèÿâÀ—⁄¯ŒÔˇKÄﬁæ¡f¥q˜‰èåÑs‰7B–˝áªÎ«Âèhmåás¸ó˝p˚O∂&AwO˛»l8gﬂ¥ˇX_*\˛à÷∆Z8◊˛™bˇô¶Ñh„Ó…Ÿ	ÁŒﬂÅÎ?–ëó?¢µ±Œ˝raıüfGé6Óû¸ë¨pf≠ì®ˇ(/\˛à÷Fn8sW€Å“é⁄∏{ÚG*¬Y±Êà˛C\pp˘#Zu·¨[y}ˇ	Ph„Ó…©gı˙"Óø¸¸4\˛à÷FO8{æÚ	eˇµ'¢çª'§3úùﬂ˙≤˛œÃƒÂèhmÙá≥ˇãøh˙Ø:-m‹=˘#™pJæ+Ëø‰úd\˛à÷Ü6ú˝_ÔÓˇ	·h„Ó…!Ñ≥y≠˝o>ó?¢µ¡	gÁN˙˙ﬂy™#–∆›ì?Bg€~ö˙ﬂvûSp˘#ZÃpˆÏ™£ˇ='9m‹=˘#‰p6Ï≠ºˇg8ó?¢µ¡gık˚_Ω˚„–∆›ì?rJ8K˜Yÿˇ“}üàÀ—⁄8+úuª≠Í›éEwO˛»â·,⁄sIˇãˆz..Dk„‹pVÏ<øˇª<m‹=˘#ßá3}ˇ…˝OﬂﬂÈ∏¸≠ç;¬ô{äÃ˛ÁÓÏ¥q˜‰è‹Œƒ≥§ı?qOw‡ÚG¥6Óg÷âr˙üµõk–∆›ì?rk8SŒï–ˇî}‹ÑÀ—⁄∏;ú˚ß€Ìˇ˛.CwO˛»·‹<„Vˇ7ø}.Dk„ùpÓútΩˇ;_Ωm‹=˘#ØÖs˘ºã˝_˛ﬁ≠∏¸≠ç7√πvÍï˛Ø}Èb¥q˜‰èºŒÖ≥O˜·w„ÚG¥6ŒYs˝ü]˝z¥q˜‰è8úøLyòËˇ‘∫/‡ÚG¥6Œ»∏ç—˛èØ¯⁄∏{ÚGŒeF˚o".Dk√ÂˇóÒÌˇ¯ä◊#WÅJº÷JÑ©Ìˇœœ‹∫∑2%∑T‚µ6P* Ãﬁ»Dˇ˝Ã Mïx≠î
+72◊ˇóüÄππ†ØµÅRaÌF¶˚ˇÊ∞&7T‚µ6P* ,ﬂ»Jˇ_{ñÂfÅJº÷JÑùYÏˇ;O¿é‹Pâ◊⁄@©Ä∞y#Î˝·	ÿîª*ÒZ(ˆod´ˇw?˚r7A%^k•B çÏˆˇ÷' EÓ®ƒkm†T@»∫ëÑ˛ﬂ˜d…]ïx≠î
+â7í”ˇõûÄDπk†ØµÅR!˜F“˙«ê+wT‚µ6P* §ﬂHfˇO“ÂŒÇJº÷JÑäIÓˇπO@Ö‹)Pâ◊⁄@©ÄPt#˘˝?Ò	(í;*ÒZ(Ín§§ˇg=urA%^k•BÈçTıˇî'†TÓ®ƒkm†T@®æë¬˛ÛüÄjπÇJº÷JÑÜ©Ì?˘	hê˚T‚µ6P* 4‹»Ïù[r§JD˚Æ‡Ó≥üŸã'8∞MCQ@ïÚËqæ¸ÄBJe ûqD˜Î5?ˇÃ`#nî„µj†§Ä`6ëÈ?ˇÃ˙ÈA^ ÒZ5PR@∞úàQ˛9øXäª ÒZ5PR@0ûà]˛	+¿X‹wPé◊™ÅíÇ˝DLÛØ]ˆ‚n@9^´J
+íâXÁ_µ$‚˛Âx≠() ®&"»ø˝
+PâªÇrºVîÑ—‰ﬂr≈]@9^´J
+⁄â»Úo≥¥‚÷ªÙ˛§¬ˇé‹ü ¸œ^rqQé◊™ÅíÇv"‚¸œ[rqQé◊™ÅíÇv"+˙¸œXrqQé◊™ÅíÇv"?A‰Ï
+êããrºVî¥Ÿ@…ˇ® Âx≠() h'Ú(ˇœWÄ\\î„µj†§Ä†ù».¨¸?YrqQé◊™ÅíÇv"G‡Úo»≈E9^´J
+⁄â4 ÊˇÍ
+êããrºVî¥iÕˇ
+êããrºVî¥9Öõˇû Âx≠() h'“:ˇÌ Âx≠() h'“	=ˇG+@.. ÒZ5PR@–N§˘_rqQé◊™ÅíÇv"ó¯Ô„„„“B´…≈] Ä†U%ÌDÆ‚)ˇÄéW(Ö’,n„„˜L«K™í<éªΩˇO»é7ÆÕ¯q.˛ /|«õUhˆ G8Âø/é7®”‡Ó˛ ˇ9æ?µ⁄©á;≈u¯+ˇ'xt¸§ö'ÎÔ·Ø¸∑Î¯·ï?0 ¬_˘?ƒª„÷?®0ƒÂüé“≈êCÇ&¸ïˇ"9˛a/oI§W˛∑ƒs¸Ìénﬂò`·Ø¸ˇ"™„oÙu„ñƒÂˇõÿéø‘›•ãì2¸ïˇ/28æ≥«ŒÀR5¸ïˇOÚ8˛¥””8¸ïˇtéo$ºÒ≠¥ƒˆ¸Át¸n◊ª_LN¯ßŒf«ozﬂ|Zºø‰dTíæ˛O9~U`˝†X…ì!„Îˇï„ãy¬ˇzÂÀÖøhê*¸©ˇ˝_≤Ö?c˛Œ¯àˇˇ¸-5VrJëÒˇˇrNz√*¬˙Af“äê1ˇy˛∫sƒ∆ÓõO≥ëπ˝§˘œºvÌæ˚≈§m|!o˛sÆÄÜ›ﬂäJ¬ñ7§Œ∂pj˜”"ë™Ÿ#≤Á?œ
+Ë¥{ÁeﬁI“Ê)ïˇO¬ª·RÉó.ˆH¯˚©¸ÿ7Zªqã∑vÉ ˇ7!ùqª©€7í	Ÿ‘*ˇøÊèáÌ<ºùF∞vÜP˘ﬂ∆%CrÅ0çå•ÚøC Øla‡Q*¥0â ˇ>Æ3º¯·Z‚∫¯ŸT˛qÍõIeO:v6NÀ6£Úﬂ¬ù{¶<ı∏+ÿû ˇ	é<dP™¡#F·®TˇÿØ£€∂a(£Ë.›ß˚è—	Rqlë"y)˝Á<¶ye‹Ô°ˇØ’ˇ{óÿ§eC.ªËåKπ˝≤˘>-oÒu≠6o+˙?j€≠*¨‰“#∂lO˙o∞·néTxıO6is˙o≥’ÜïS>¿£≠Üπ
+˝7€dœåÒhì_„rÙﬂ£|€ xT>L˘ ◊•ˇNÖ;WxıO
+G*º˙ÙﬂØdÛJ.=¢d∞íKÔDˇß,ﬁø≈◊µZ<ﬁ‚ÎnIˇg-€¬eù±l»e›õ˛X∞ãÆe¡®Æ°ˇ1¶n‰‘√gò:‘√”ËòI{9ÈÿŸ&ç=ÈÿX˙i¯v?p•·√?˝6pGUe‡'<ä/˙o»¶9dC>d»!|ßˇ)NÓÎ…◊wsÚsNæŒ˙ü•{kª_‹Y˜Guø»˙ü®cw;^πäéOÎxÖ&˙ü´iÉõæ¢¶lzò>˙üÓ‡|ÏÍ~Ê¡«8Iˇ+º›Ê∑‹…€è}˚ £Ëë;˝‚üÓÍ≈'ø¯'Ü”ˇ:O7˚È<˝ßdû_ÛNÁªø~˝—∫˚5jÈø¿Á“ãˇì_£ê˛!óˇˇC.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C.˝C§Ï”1   É0ˇÆóÃ≠ÌËÚ?t˘∫¸]˛á.ˇCóˇ°Àˇ–ÂËÚ?t˘∫¸]˛á.ˇCóˇ°Àˇ–ÂËÚ?t˘∫¸]˛áÆ  ˇˇÊ^h-
+endstream
+endobj
+9 0 obj
+<</Type /XObject
+/Subtype /Image
+/Width 341
+/Height 341
+/ColorSpace /DeviceGray
+/BitsPerComponent 8
+/Filter /FlateDecode
+/DecodeParms <</Predictor 15 /Colors 1 /BitsPerComponent 8 /Columns 341>>
+/Length 2429>>
+stream
+xÏ›ªë$E∆ÒÊL@Cd<`<¿Ñc%TL ∞ mL¿ÑÒÄ=0·÷bÓπ›]èÃ¨¸2'Ææø–-ÏF«÷/2VÈ©öÔ
+ÛÔ{ˇG2™B‚¨"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™"¢*"™" U˝ÎåXS)Â¸œõ˚-´‘ÌÆo_.œàïüoßwó˜à'À ú’Î€r∫!¶ı|;ïünâ”ö®z}[
+ÑıéZRYÛT?†"X?¢¶≤¶©~Bıg˝åö…ö•˙’õı+j"kíÍ+T_÷◊®y¨9™TO÷-jkäÍ’èuèö≈ö°z@ıb=¢&±&®VP}Xk®9¨Ò™UT÷:j
+k∏juûµÖö¡≠⁄Dùem£&∞´vPÁX{®Ò¨±™]‘÷>j8k®Í ’Œ:BçfçT¢ZY«®¡¨Å™T´5ñ5NUÑjaï°Ü≤Ü©
+Qı¨R‘H÷(U1™ñUé»§™@’±jP„XcTU®Vjkà™UŒ™EçbçPU£JYı®A¨™T´5ÜØjBï∞⁄PCX·™F‘1´5Ç≠jF±⁄QX¡™®}÷T<+Vu
+µ«:á
+gÖ™N¢∂YgQ—¨H’i‘Î<*ò®ÍÄZgı@≈≤‚T]Pk¨>®PVò™Íë’…äRuC›≥˙°YA™é®[VOT+F’ı5´/*å¢Íå˙ï’≈äPuG˝ÃÍè
+b®P?≤"P1¨˛;.!®•îóﬂ˛>›Ô˛˘oŒtüUj9˝ËÔâ [ÜZû˛ºº@¸G’[àz-œV ™≥*µ@X®æ™`T+’UéÍœäAıT@ıf°:™Ü†˙≤¢P˝TÉP=Ya®n™a®~¨8T/’@T/V ™ìj(™+’G5’ÉäÍ¢é:œäEıPM@ùe£:®¶†Œ±¢QÁUìPgX·®”™i®vV<Í¨j"™ï5 uÚΩU*Í˝ò’ÔWU®s≥öçZûüT¢•ƒ†N©¶£ñrU≤ÜLÍ‘Ä@-•‹~æ_ÖiPœ¸j>mÿ˛éı1PØ0‘€/ˆ”ÜÕ™Çz?oXöjRßq∂™™ñ£ÍÈ*ˇu’_°Eù¯∞êQUµUÑjgµ©.Çjf5©.Éjeµ®.Ñjd5®.Öjc’´.ÜjbU´.ája’™.àj`U™.â™g’©.ä™fU©.ã™e’®.å™dU®.ç™cï´.é™b´.è™aï™U√*T%Íá§_Ò(S%ÍßÑ¨"U¢~I∆*Q%Í´D¨U¢ní∞éUâ∫K¿:T%Í°1ÎHï®ïÜ¨U¢V±ˆUâ⁄h¿⁄U%j≥>kOï®ù∫¨U¢vÎ±∂Uâ:®√⁄T%Í∞6kKï®Çö¨U¢äj±÷Uâ*¨¡ZU%™∏:kMï®ä™¨U¢™™±Uâ™¨¬zP%™∫#Î^ï®Ü¨;U¢ö⁄≥nU◊l`TıPõ”¸˚·ÕÊô[’ÎªÕ˝˙∆Q_.ˇm¨∂™Ô/÷oıyÉ∫S±ÆÜ∫WÖ∞.ázP∞ÆázTug]µ¢ÍÃ∫"jM’ïuI‘™™#Îö®uU7÷EQ™N¨´¢∂T]XóEm™:∞Æã⁄Vùf]µ£:…∫2jOuäui‘ÆÍÎ⁄®}U3Î‚®U#ÎÍ®#UÎÚ®CUk>ÍˇÏ›—q€:Fa›
+ÆHq	NÈ!∏ì¥êRÇJp+NŸ≤,R ±ÏYPôˇºögæ¡\‚ÙÒ#t$Ó·uΩùRhπoU ªó%T√ZıÆV°⁄T]´U®ß⁄O ◊jÍ[&UÛjÍ{6U#´PœUM¨B˝»™j`Í%≥jìU®üŸU¨BΩ °∫…*‘Î<™¨B]‰R≠≤
+uôOµ¬*‘UN’"´P◊yU¨BΩ…≠z√*‘€¸™+V°ÍP]∞
+µTèÍ´Pãu©^XÖZÆOıÃ*‘Jù™o¨B≠ı_ÌÕû~7Øπ‰õÂ˛vº¸c´π˚˛µ˙U=˘PM/2º∑O‘Ó'Ä+'Í·ˇ„£Ì˜wäö¢ÍE5≥Ó5C’èjd›-jÇj™âuø®ºj™Åu«®∏j/jìuœ®¥j?jÉu◊®∞ÍÍ&ÎæQY’1‘÷ù£¢™£®U÷Ω£í™„®÷›£Ç™®E÷˝£r™1®÷;@≈T£PoXÔïRçC]±ﬁ*§â∫`ΩTF5ıäıNP’h‘ÎΩ†™Ò®g÷ªAˆ≠‘√i/Î0u‡◊U¯n‡ÛO◊˝ÌΩ˛˘bøÿïeä⁄WÔ˚ ’∞è8?≠ﬁt®x‘xUÔ‡ªµø^ûV 5^b=Ω'É∞®Ä*¬zB=¨*°
+∞æ£¨*¢Œ˙ÅŒ
+°2™¡¨ü®¡¨*§ zç ä°R™Å¨K‘@VSc]£Ü±Ç®újÎ-j+â
+™Ü∞ñPCXQTR5Äµå¿ ¢¢™√¨5‘aVïUd≠£≤“®∞ÍÎÍ+éJ´∞n£∞Ú®∏j7kµõ5ïWÌdm£v≤f†&®v±ZPªXSP3T;Xm®¨9®)™nV+™õ5	5G’…jGu≤f°&©∫X=®.÷4‘,U´’¡öáö¶jfı¢öYQÛTç¨~T#k&j¢™âµ’ƒöäö©j`ÌC5∞Ê¢¶™6Y{Qõ¨…®π™÷~‘k6j≤Í&ÎÍ&k:j∂ÍÎÍk>j∫jïuµ :5_µ¬:éZaùÅ:Aµ»ÅZdùÇ:Cµ¿ÉZ`ùÉ:EıÜ5
+ıÜuÍ’kÍäuÍ$’k$ÍÇuÍ,’+÷X‘+÷y®”T/¨—®÷â®ÛTœ¨Ò®g÷ô®Òs¨éé_	‘∑ìÉÜ~π¬ßÉ=π>‚ÏÍÒ‚∫>∏©™ˇl·3◊ x"≥Ú¶µJ$U"©IïH™DR%í*ëTâ§J$U"©IïH™DR%í*ëTâ§J$U"©IïH™DR%í*ëTâ§J$U"©IïH™DR%í*ëTâ§J$U"©IïH™DR%í*ëTâ§J$U"©IïH™DR%í*ëTâ§J$U"©IïH™DR%í*—ﬂ   ˇˇ£H•§
+endstream
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/Ff5d2de5f3a71699ae4b2d83179e62d09e6fc4126 7 0 R
+/F0a76705d18e0494dd24cb573e53aa0a8c710ec99 5 0 R
+/F5bd75554d346521734d9bea6b7a2fcb3c7f7a824 6 0 R
+>>
+/XObject <<
+/I350a7c7e07ce2bc40086857555e06c24c50cbdd6 8 0 R
+>>
+/ColorSpace <<
+>>
+>>
+endobj
+10 0 obj
+<<
+/Producer (˛ˇ F P D F   1 . 7)
+/CreationDate (D:20240815195534)
+/ModDate (D:20240815195534)
+>>
+endobj
+11 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/Names <<
+/EmbeddedFiles << /Names [
+  
+] >>
+>>
+>>
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000029080 00000 n 
+0000036448 00000 n 
+0000000009 00000 n 
+0000000143 00000 n 
+0000029167 00000 n 
+0000029263 00000 n 
+0000029371 00000 n 
+0000029472 00000 n 
+0000033776 00000 n 
+0000036756 00000 n 
+0000036870 00000 n 
+trailer
+<<
+/Size 12
+/Root 11 0 R
+/Info 10 0 R
+>>
+startxref
+36968
+%%EOF
