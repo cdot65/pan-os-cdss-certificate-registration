@@ -44,3 +44,13 @@ func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.Printf("[FATAL] "+format, v...)
 	l.exitFunc(1)
 }
+
+// Error logs an error message.
+func (l *Logger) Error(v ...interface{}) {
+	l.Printf("[ERROR] %v", fmt.Sprintln(v...))
+}
+
+// Warn logs a warning message.
+func (l *Logger) Warn(v ...interface{}) {
+	l.Printf("[WARN] %v", fmt.Sprintln(v...))
+}
