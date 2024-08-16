@@ -136,6 +136,43 @@ func (dm *DeviceManager) getNgfwDeviceInfo(client PanosClient, hostname string) 
 	}, nil
 }
 
+// showDeviceCertificateStatus retrieves the output from the command `show device-certificate status` from
+// a PAN-OS NGFW using the provided PanosClient
+// The method returns a map of the device certificate information, including status and expiration information
+func (dm *DeviceManager) showDeviceCertificateStatus(client PanosClient, hostname string) (map[string]string, error) {
+	cmd := "<show><device-certificate><status/></device-certificate></show>"
+	response, err := client.Op(cmd, "", nil, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to perform op command: %w %s", err, hostname)
+	}
+
+	var resp struct {
+		XMLName xml.Name `xml:"response"`
+		Status  string   `xml:"status,attr"`
+		Result  struct {
+			DeviceCertificate config.DeviceCertificateStatus `xml:"device-certificate"`
+		} `xml:"result"`
+	}
+
+	if err := xml.Unmarshal(response, &resp); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	if resp.Status != "success" {
+		return nil, fmt.Errorf("operation failed: %s", resp.Status)
+	}
+
+	return map[string]string{
+		"msg":               resp.Result.DeviceCertificate.Msg,
+		"not_valid_after":   resp.Result.DeviceCertificate.NotValidAfter,
+		"not_valid_before":  resp.Result.DeviceCertificate.NotValidBefore,
+		"seconds-to-expire": resp.Result.DeviceCertificate.SecondsToExpire,
+		"status":            resp.Result.DeviceCertificate.Status,
+		"timestamp":         resp.Result.DeviceCertificate.Timestamp,
+		"validity":          resp.Result.DeviceCertificate.Validity,
+	}, nil
+}
+
 func readInventoryFile(filename string) (*config.Inventory, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
