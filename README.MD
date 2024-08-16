@@ -108,9 +108,6 @@ You have two modes of executing this project:
 
 4. _Initialize the Go project_
 
-   - Initialize with `go mod init github.com/cdot65/pan-os-cdss-certificate-registration`
-   ![initialize_go_project](docs/assets/images/go_init.png)
-
    - Download the dependencies with `go mod tidy`
    ![go mod tidy](docs/assets/images/go_tidy.png)
 
