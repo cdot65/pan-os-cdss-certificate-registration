@@ -1,0 +1,53 @@
+name: Build and Test Pull Request
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - uses: actions/checkout@v4.1.7
+
+      # Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v5.0.2
+        with:
+          go-version: '1.21.x'
+
+      # Download and cache Go modules
+      - name: Cache Go Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # Install Go dependencies
+      - name: Install Dependencies
+        run: go mod download
+
+      # Clear module cache (optional)
+      - name: Clear module cache
+        run: go clean -modcache
+
+      # Ensure all dependencies are tidy
+      - name: Tidy Go Module
+        run: go mod tidy
+
+      # Build the binary
+      - name: Build Binary
+        run: |
+          go build -v ./main.go
+
+      # Run tests on all files with *_test.go in name
+      - name: Run Tests
+        run: |
+          go test -v ./...
