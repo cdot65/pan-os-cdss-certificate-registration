@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/config"
 	"github.com/cdot65/pan-os-cdss-certificate-registration/logger"
+	"sync"
 )
 
 // PanosClient interface for the PAN-OS operations we need
@@ -61,6 +62,78 @@ func (dm *DeviceManager) GetDeviceList(noPanorama bool) ([]map[string]string, er
 	}
 
 	return deviceList, nil
+}
+
+// GetDeviceCertificateStatus retrieves the output from the command `show device-certificate status`
+// It will always leverage the pango SDK, and only interact with NGFW devices
+// It will update each device in the deviceList with the certificate status information
+func (dm *DeviceManager) GetDeviceCertificateStatus(deviceList []map[string]string) {
+	// Always set to NGFW workflow for this operation
+	dm.SetNgfwWorkflow()
+
+	var wg sync.WaitGroup
+
+	for i := range deviceList {
+		wg.Add(1)
+		go func(index int) {
+			defer wg.Done()
+
+			device := deviceList[index]
+			hostname := device["hostname"]
+			ipAddress := device["ip-address"]
+
+			// Initialize the errors string if it doesn't exist
+			if _, ok := device["errors"]; !ok {
+				deviceList[index]["errors"] = ""
+			}
+
+			// Create a new pango client for each device
+			client := dm.panosClientFactory(
+				ipAddress,
+				dm.config.Auth.Credentials.Firewall.Username,
+				dm.config.Auth.Credentials.Firewall.Password,
+			)
+
+			// Initialize the client
+			if err := client.Initialize(); err != nil {
+				errMsg := fmt.Sprintf("Failed to initialize client for %s: %v", hostname, err)
+				dm.logger.Error(errMsg)
+				deviceList[index]["errors"] += errMsg + "; "
+				return
+			}
+
+			// Get device certificate status
+			certStatus, err := dm.showDeviceCertificateStatus(client, hostname)
+			if err != nil {
+				errMsg := fmt.Sprintf("Failed to get device certificate status for %s: %v", hostname, err)
+				dm.logger.Error(errMsg)
+				deviceList[index]["errors"] += errMsg + "; "
+				return
+			}
+
+			// Update the device entry with certificate status information
+			for key, value := range certStatus {
+				deviceList[index][key] = value
+			}
+		}(i)
+	}
+
+	// Wait for all goroutines to finish
+	wg.Wait()
+
+	// Log a summary of errors
+	errorCount := 0
+	for _, device := range deviceList {
+		if errors := device["errors"]; errors != "" {
+			errorCount++
+			dm.logger.Warn(fmt.Sprintf("Device %s encountered errors: %s", device["hostname"], errors))
+		}
+	}
+	if errorCount > 0 {
+		dm.logger.Warn(fmt.Sprintf("Total devices encountered errors while getting device certificate status: %d", errorCount))
+	} else {
+		dm.logger.Info("Successfully retrieved device certificate status for all devices")
+	}
 }
 
 // SetNgfwWorkflow sets the PAN-OS client factory to create a real PAN-OS client for NGFW.
