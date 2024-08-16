@@ -58,3 +58,21 @@ func PrintStartingFirewallConnections(l *logger.Logger) {
 	l.Info("Starting connections to firewalls using scrapli-go")
 	fmt.Println("Initiating connections to firewalls for WildFire registration...")
 }
+
+func PrintStartingDeviceCertificateVerification(l *logger.Logger) {
+	l.Info("Starting connections to firewalls using pango")
+	fmt.Println("Initiating connections to firewalls for Device Certificate Verification...")
+}
+
+func PrintDeviceErrors(deviceList []map[string]string, l *logger.Logger) {
+	for _, device := range deviceList {
+		if errors := device["errors"]; errors != "" {
+			l.Warn(fmt.Sprintf("Errors for device %s:", device["hostname"]))
+			for _, err := range strings.Split(errors, "; ") {
+				if err != "" {
+					l.Warn("  " + err)
+				}
+			}
+		}
+	}
+}
