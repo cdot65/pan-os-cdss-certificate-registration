@@ -10,22 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Check out the repository code
       - uses: actions/checkout@v4.1.7
 
+      # Set up Go environment
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
           go-version: '1.21.x'
 
-      # Initialize Go Module
-      - name: Initialize Go Module
-        run: go mod init github.com/cdot65/pan-os-cdss-certificate-registration
+      # Download and cache Go modules
+      - name: Cache Go Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-      # Clear module cache
+      # Install Go dependencies
+      - name: Install Dependencies
+        run: go mod download
+
+      # Clear module cache (optional)
       - name: Clear module cache
         run: go clean -modcache
 
-      # Tidy up dependencies
+      # Ensure all dependencies are tidy
       - name: Tidy Go Module
         run: go mod tidy
 
