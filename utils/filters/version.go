@@ -117,7 +117,7 @@ func IsAffectedVersion(device map[string]string, isGlobalProtect bool) (bool, st
 	return false, "", nil
 }
 
-func SplitDevicesByVersion(deviceList []map[string]string) (affected []map[string]string, unaffected []map[string]string, err error) {
+func SplitDevicesByVersion(deviceList []map[string]string) (supported []map[string]string, unsupported []map[string]string, err error) {
 	for _, device := range deviceList {
 		isAffected, minUpdateRelease, err := IsAffectedVersion(device, false) // Assuming no Global Protect for now
 		if err != nil {
@@ -131,12 +131,12 @@ func SplitDevicesByVersion(deviceList []map[string]string) (affected []map[strin
 
 		if isAffected {
 			deviceCopy["minimumUpdateRelease"] = minUpdateRelease
-			affected = append(affected, deviceCopy)
+			unsupported = append(unsupported, deviceCopy)
 		} else {
 			deviceCopy["result"] = "Not affected" // Default result for unaffected devices
-			unaffected = append(unaffected, deviceCopy)
+			supported = append(supported, deviceCopy)
 		}
 	}
 
-	return affected, unaffected, nil
+	return supported, unsupported, nil
 }
