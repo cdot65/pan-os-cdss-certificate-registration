@@ -159,9 +159,9 @@ func getUnsupportedVersionsHeaderRow() core.Row {
 	return row.New(5).Add(
 		text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 		text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(3, "Minimum Upgrade Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 		text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 		text.NewCol(3, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		text.NewCol(3, "Serial", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 	)
 }
 
@@ -171,9 +171,9 @@ func getUnsupportedVersionsContentRows(deviceList []map[string]string) []core.Ro
 		r := row.New(4).Add(
 			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, device["minimumUpdateRelease"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(3, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(3, device["serial"], props.Text{Size: 7, Align: align.Left}),
 		)
 		if i%2 == 0 {
 			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
@@ -186,10 +186,7 @@ func getUnsupportedVersionsContentRows(deviceList []map[string]string) []core.Ro
 func getRegistrationCandidatesHeaderRow() core.Row {
 	return row.New(5).Add(
 		text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		text.NewCol(2, "SW Version", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		text.NewCol(2, "Model", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		text.NewCol(3, "IP Address", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
-		text.NewCol(3, "Result", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(10, "Result", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
 	)
 }
 
@@ -198,10 +195,7 @@ func getRegistrationCandidatesContentRows(deviceList []map[string]string) []core
 	for i, device := range deviceList {
 		r := row.New(4).Add(
 			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(2, device["sw-version"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(3, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
-			text.NewCol(3, device["result"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(10, device["result"], props.Text{Size: 7, Align: align.Left}),
 		)
 		if i%2 == 0 {
 			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
