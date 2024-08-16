@@ -21,6 +21,9 @@
 go.work
 go.work.sum
 
+# Jetbrains Goland
+.idea
+
 # env file
 .env
 
