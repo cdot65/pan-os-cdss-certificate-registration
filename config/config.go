@@ -39,19 +39,21 @@ type AuthConfig struct {
 
 // DeviceEntry represents a single device entry from the Panorama response.
 type DeviceEntry struct {
-	Name            string `xml:"name,attr"`
-	Serial          string `xml:"serial"`
-	Hostname        string `xml:"hostname"`
-	IPAddress       string `xml:"ip-address"`
-	IPv6Address     string `xml:"ipv6-address"`
-	Model           string `xml:"model"`
-	Family          string `xml:"family"`
-	SWVersion       string `xml:"sw-version"`
-	AppVersion      string `xml:"app-version"`
-	AVVersion       string `xml:"av-version"`
-	WildfireVersion string `xml:"wildfire-version"`
-	ThreatVersion   string `xml:"threat-version"`
-	Result          string `json:"result,omitempty"`
+	Name            string                  `xml:"name,attr"`
+	Serial          string                  `xml:"serial"`
+	Hostname        string                  `xml:"hostname"`
+	IPAddress       string                  `xml:"ip-address"`
+	IPv6Address     string                  `xml:"ipv6-address"`
+	Model           string                  `xml:"model"`
+	Family          string                  `xml:"family"`
+	SWVersion       string                  `xml:"sw-version"`
+	AppVersion      string                  `xml:"app-version"`
+	AVVersion       string                  `xml:"av-version"`
+	WildfireVersion string                  `xml:"wildfire-version"`
+	ThreatVersion   string                  `xml:"threat-version"`
+	Result          string                  `json:"result,omitempty"`
+	Errors          []string                `json:"errors,omitempty"`
+	DeviceCert      DeviceCertificateStatus `json:"deviceCert,omitempty"`
 }
 
 // DevicesResponse represents the structure of the XML response from Panorama.
@@ -63,6 +65,17 @@ type DevicesResponse struct {
 			Entries []DeviceEntry `xml:"entry"`
 		} `xml:"devices"`
 	} `xml:"result"`
+}
+
+// DeviceCertificateStatus represents the response of command `show device-certificate status`.
+type DeviceCertificateStatus struct {
+	Msg             string `xml:"msg"`
+	NotValidAfter   string `xml:"not_valid_after"`
+	NotValidBefore  string `xml:"not_valid_before"`
+	SecondsToExpire string `xml:"seconds-to-expire"`
+	Status          string `xml:"status"`
+	Timestamp       string `xml:"timestamp"`
+	Validity        string `xml:"validity"`
 }
 
 // Inventory represents the structure of the inventory.yaml file

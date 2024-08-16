@@ -2,6 +2,7 @@
 package pdf
 
 import (
+	"encoding/json"
 	"log"
 	"os"
 	"path/filepath"
@@ -77,6 +78,9 @@ func GetMaroto(allDevices, ineligibleHardware, unsupportedVersions, registration
 	// Registration Candidates Table
 	addDevicesTable(m, registrationCandidates, "WildFire Registration Candidates", "Devices eligible for WildFire registration with device certificate", "registrationCandidates")
 
+	// All Devices Certificate Table
+	addDevicesTable(m, allDevices, "Device Certificate Status", "Status of the NGFW's Device Certificate", "deviceCertificateStatus")
+
 	return m
 
 }
@@ -120,6 +124,9 @@ func getDeviceRows(deviceList []map[string]string, tableType string) []core.Row 
 	case "registrationCandidates":
 		headerRow = getRegistrationCandidatesHeaderRow()
 		contentRows = getRegistrationCandidatesContentRows(deviceList)
+	case "deviceCertificateStatus":
+		headerRow = getDeviceCertificateStatusHeaderRow()
+		contentRows = getDeviceCertificateStatusContentRows(deviceList)
 	default:
 		log.Fatalf("Unknown table type: %s", tableType)
 	}
@@ -224,6 +231,45 @@ func getAllDevicesContentRows(deviceList []map[string]string) []core.Row {
 			text.NewCol(2, device["model"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(3, device["ip-address"], props.Text{Size: 7, Align: align.Left}),
 			text.NewCol(3, device["serial"], props.Text{Size: 7, Align: align.Left}),
+		)
+		if i%2 == 0 {
+			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
+		}
+		rows = append(rows, r)
+	}
+	return rows
+}
+
+func getDeviceCertificateStatusHeaderRow() core.Row {
+	return row.New(5).Add(
+		text.NewCol(2, "Hostname", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Status", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(2, "Validity", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(3, "Not Valid After", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+		text.NewCol(3, "Seconds to Expire", props.Text{Size: 8, Align: align.Left, Style: fontstyle.Bold}),
+	)
+}
+
+func getDeviceCertificateStatusContentRows(deviceList []map[string]string) []core.Row {
+	var rows []core.Row
+	for i, device := range deviceList {
+		var certStatus map[string]string
+		if err := json.Unmarshal([]byte(device["deviceCert"]), &certStatus); err != nil {
+			// If we can't unmarshal, use a map with error information
+			certStatus = map[string]string{
+				"status":            "Error",
+				"validity":          "Unknown",
+				"not_valid_after":   "Unknown",
+				"seconds-to-expire": "Unknown",
+			}
+		}
+
+		r := row.New(4).Add(
+			text.NewCol(2, device["hostname"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(2, certStatus["status"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(2, certStatus["validity"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, certStatus["not_valid_after"], props.Text{Size: 7, Align: align.Left}),
+			text.NewCol(3, certStatus["seconds-to-expire"], props.Text{Size: 7, Align: align.Left}),
 		)
 		if i%2 == 0 {
 			r.WithStyle(&props.Cell{BackgroundColor: getGrayColor()})
